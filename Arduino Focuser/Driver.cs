@@ -73,16 +73,15 @@ namespace ASCOM.Arduino
 
         private int position = 0;
 
-        private FocuserConsole fc;
-
         ASCOM.Utilities.Profile profile;
+
+        SerialPort port;
 
         //
         // Constructor - Must be public for COM registration!
         //
         public Focuser()
         {
-            fc = new FocuserConsole();
 
             profile = new ASCOM.Utilities.Profile();
             profile.DeviceType = global::ASCOM.Arduino.Properties.Resources.DeviceType;
@@ -162,8 +161,6 @@ namespace ASCOM.Arduino
 
         public void Halt()
         {
-            fc.addLine("Halting...");
-            fc.addLine("Done!\r\n");
         }
 
         public bool IsMoving
@@ -191,49 +188,43 @@ namespace ASCOM.Arduino
         // Method for actually attempting to connect to the focuser
         public bool connectFocuser()
         {
-#if DEBUG
-            fc.Show();
-#endif
+            port = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
+            port.Open();
 
-            fc.addLine("Starting up...");
+
             return true;
         }
 
         // Method for disconnecting the focuser
         public bool disconnectFocuser()
         {
-            fc.addLine("Shutting down...");
-#if DEBUG
-            fc.Dispose();
-#endif
+            port.Close();
+
             return true;
         }
 
         public int MaxIncrement
         {
-            get 
-            { 
-                fc.addLine("Program requested MaxIncrement, value is: " + this.maxIncrement.ToString());
-                return this.maxIncrement; 
-            }
+            get { return this.maxIncrement; }
         }
 
         public int MaxStep
         {
-            get 
-            {
-                fc.addLine("Program requested MaxStep, value is: " + this.maxStep.ToString());
-                return this.maxStep; 
-            }
+            get { return this.maxStep; }
         }
 
         public void Move(int val)
         {
-            fc.addLine("Moving: " + val.ToString() + "...");
-            
+            this.isMoving = true;
 
+            if( val > 0){
+                port.Write(": M " + val.ToString() +" #");
+            }
+            else if (val < 0){
+                port.Write(": M " + val.ToString() + " #");
+            }
 
-            fc.addLine("Done!\r\n");
+            this.isMoving = false;
         }
 
         public int Position
@@ -254,7 +245,6 @@ namespace ASCOM.Arduino
         {
             get 
             {
-                fc.addLine("Program requested StepSize, value is: " + this.stepSize.ToString());
                 return stepSize; 
             }
         }

@@ -11,4 +11,3 @@ C:\Users\ejholmes\Documents\Visual Studio 2008\Projects\Arduino Focuser\Arduino 
 C:\Users\ejholmes\Documents\Visual Studio 2008\Projects\Arduino Focuser\Arduino Focuser\bin\Release\NLog.config
 C:\Users\ejholmes\Documents\Visual Studio 2008\Projects\Arduino Focuser\Arduino Focuser\bin\Release\NLog.dll
 C:\Users\ejholmes\Documents\Visual Studio 2008\Projects\Arduino Focuser\Arduino Focuser\bin\Release\NLog.xml
-C:\Users\ejholmes\Documents\Visual Studio 2008\Projects\Arduino Focuser\Arduino Focuser\obj\Release\ASCOM.Arduino.FocuserConsole.resources
