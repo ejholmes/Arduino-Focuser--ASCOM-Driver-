@@ -1,0 +1,9 @@
+C:\Users\ejholmes\AppData\Local\Temporary Projects\Arduino\bin\Release\ASCOM.Arduino.Focuser.dll
+C:\Users\ejholmes\AppData\Local\Temporary Projects\Arduino\bin\Release\ASCOM.Arduino.Focuser.pdb
+C:\Users\ejholmes\AppData\Local\Temporary Projects\Arduino\obj\Release\ResolveAssemblyReference.cache
+C:\Users\ejholmes\AppData\Local\Temporary Projects\Arduino\obj\Release\Arduino.csproj.ResolveComReference.cache
+C:\Users\ejholmes\AppData\Local\Temporary Projects\Arduino\obj\Release\ASCOM.Arduino.Properties.Resources.resources
+C:\Users\ejholmes\AppData\Local\Temporary Projects\Arduino\obj\Release\ASCOM.Arduino.SetupDialogForm.resources
+C:\Users\ejholmes\AppData\Local\Temporary Projects\Arduino\obj\Release\Arduino.csproj.GenerateResource.Cache
+C:\Users\ejholmes\AppData\Local\Temporary Projects\Arduino\obj\Release\ASCOM.Arduino.Focuser.dll
+C:\Users\ejholmes\AppData\Local\Temporary Projects\Arduino\obj\Release\ASCOM.Arduino.Focuser.pdb
