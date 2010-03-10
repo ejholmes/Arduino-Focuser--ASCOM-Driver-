@@ -61,7 +61,6 @@
     </Reference>
     <Reference Include="ASCOM.Utilities, Version=5.5.1.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="NLog, Version=1.0.0.505, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -95,12 +94,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Test.js" />
-  </ItemGroup>
-  <ItemGroup>
     <COMReference Include="ASCOM.Helper">
       <Guid>{12DC26BD-E8F7-4328-8A8B-B16C6D87A077}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -128,7 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ASCOM.png" />
-    <Content Include="ReadMe.htm" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

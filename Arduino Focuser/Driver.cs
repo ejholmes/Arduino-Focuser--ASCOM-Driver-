@@ -34,8 +34,6 @@ using ASCOM.Helper2;
 using ASCOM.Interface;
 using ASCOM.Utilities;
 
-using NLog;
-
 namespace ASCOM.Arduino
 {
     //
