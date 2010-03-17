@@ -93,7 +93,7 @@ namespace ASCOM.Arduino
 
         private FocusControl FocuserControl;
 
-        private ASCOM.Utilities.Serial SerialConnection = new ASCOM.Utilities.Serial();
+        private SerialPort SerialConnection;
 
         private ASCOM.Utilities.Util HC = new ASCOM.Utilities.Util();
 
@@ -122,10 +122,12 @@ namespace ASCOM.Arduino
             try { this.position = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position")); }
             catch { this.position = 0; }
 
-            SerialConnection.Parity = SerialParity.None;
+            /*SerialConnection.Parity = SerialParity.None;
             SerialConnection.PortName = this.comPort;
             SerialConnection.StopBits = SerialStopBits.One;
-            SerialConnection.Speed = SerialSpeed.ps9600;
+            SerialConnection.Speed = SerialSpeed.ps9600;*/
+
+            
 
 
             FocuserControl = new FocusControl(this);
@@ -178,7 +180,7 @@ namespace ASCOM.Arduino
 
         public void Halt()
         {
-            SerialConnection.Transmit(": H #");
+            SerialConnection.Write(": H #");
         }
 
         public bool IsMoving
@@ -206,9 +208,15 @@ namespace ASCOM.Arduino
         // Method for actually attempting to connect to the focuser
         public bool connectFocuser()
         {
-            SerialConnection.Connected = true;
+            SerialConnection = new SerialPort();
+            SerialConnection.Parity = Parity.None;
+            SerialConnection.PortName = this.comPort;
+            SerialConnection.StopBits = StopBits.One;
+            SerialConnection.BaudRate = 9600;
 
-            FocuserControl.Show();
+            SerialConnection.Open();
+
+            //FocuserControl.Show();
 
             return true;
         }
@@ -216,9 +224,9 @@ namespace ASCOM.Arduino
         // Method for disconnecting the focuser
         public bool disconnectFocuser()
         {
-            SerialConnection.Connected = false;
+            SerialConnection.Close();
 
-            FocuserControl.Dispose();
+            //FocuserControl.Dispose();
 
             return true;
         }
@@ -257,14 +265,25 @@ namespace ASCOM.Arduino
 
         public void MoveAndWait(int val)
         {
-            SerialConnection.Transmit(": M " + val + " #");
+            SerialConnection.Write(": M " + val + " #");
+
+            while (SerialConnection.BytesToRead == 0)
+            {
+                HC.WaitForMilliseconds(100);
+            }
+
+            if (SerialConnection.ReadLine() == "M DONE\r")
+            {
+                SerialConnection.DiscardInBuffer();
+                return;
+            }
         }
 
         public void FastMove(int val)
         {
             int fastMove = val - (int)SpeedCutoff.SLOW; // Calculate the number of steps for fast movement
-            SerialConnection.Transmit(": S " + (int)SlewSpeeds.FAST + " #"); // Set rpm to 100
-            SerialConnection.Transmit(": T " + (int)StepTypes.SINGLE + " #"); // Set step type to single.
+            SerialConnection.Write(": S " + (int)SlewSpeeds.FAST + " #"); // Set rpm to 100
+            SerialConnection.Write(": T " + (int)StepTypes.SINGLE + " #"); // Set step type to single.
 
             this.MoveAndWait(fastMove); // Move and wait for return
 
@@ -273,8 +292,8 @@ namespace ASCOM.Arduino
 
         public void SlowMove(int val)
         {
-            SerialConnection.Transmit(": S " + (int)SlewSpeeds.SLOW + " #"); // Set rpm to 10
-            SerialConnection.Transmit(": T " + (int)StepTypes.MICROSTEP + " #"); // Set step type to microstepping
+            SerialConnection.Write(": S " + (int)SlewSpeeds.SLOW + " #"); // Set rpm to 10
+            SerialConnection.Write(": T " + (int)StepTypes.MICROSTEP + " #"); // Set step type to microstepping
 
             this.MoveAndWait(val); // Move and wait for return
         }
