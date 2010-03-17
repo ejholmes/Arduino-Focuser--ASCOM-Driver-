@@ -36,6 +36,21 @@ using ASCOM.Utilities;
 
 namespace ASCOM.Arduino
 {
+
+    public enum StepTypes
+    {
+        SINGLE = 1,
+        DOUBLE = 2,
+        INTERLEAVE = 3,
+        MICROSTEP = 8
+    }
+
+    public enum Speeds
+    {
+        FAST = 1000,
+        MID = 500,
+        SLOW = 100
+    }
     //
     // Your driver's ID is ASCOM.Arduino.Focuser
     //
@@ -50,9 +65,9 @@ namespace ASCOM.Arduino
         //
         // Driver ID and descriptive string that shows in the Chooser
         //
-        private static string s_csDriverID = "ASCOM.Arduino.Focuser";
+        public static string s_csDriverID = "ASCOM.Arduino.Focuser";
         // TODO Change the descriptive string for your driver then remove this line
-        private static string s_csDriverDescription = "Arduino Focuser";
+        public static string s_csDriverDescription = "Arduino Focuser";
 
         // Link connection
         private bool linkState = false;
@@ -71,44 +86,49 @@ namespace ASCOM.Arduino
 
         private int position = 0;
 
-        ASCOM.Utilities.Profile profile;
+        private ASCOM.Utilities.Serial SerialConnection = new ASCOM.Utilities.Serial();
 
-        SerialPort port;
+        private ASCOM.Utilities.Util HC = new ASCOM.Utilities.Util();
+
+        private ASCOM.Utilities.Profile profile = new ASCOM.Utilities.Profile();
 
         //
         // Constructor - Must be public for COM registration!
         //
         public Focuser()
         {
-
-            profile = new ASCOM.Utilities.Profile();
-            profile.DeviceType = global::ASCOM.Arduino.Properties.Resources.DeviceType;
+            profile.DeviceType = "Focuser";
 
 
             try {
-                this.comPort = profile.GetValue(global::ASCOM.Arduino.Properties.Resources.DriverID, "ComPort");
+                this.comPort = profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "ComPort");
             }
             catch {
                 this.comPort = null;
             }
-            try { 
-                this.stepSize = Int32.Parse(profile.GetValue(global::ASCOM.Arduino.Properties.Resources.DriverID, "StepSize"));
+            try {
+                this.stepSize = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "StepSize"));
             }
             catch {
                 this.stepSize = 2;
             }
             try {
-                this.maxStep = Int32.Parse(profile.GetValue(global::ASCOM.Arduino.Properties.Resources.DriverID, "MaxStep"));
+                this.maxStep = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxStep"));
             }
             catch {
                 this.maxStep = 25000;
             }
             try {
-                this.maxIncrement = Int32.Parse(profile.GetValue(global::ASCOM.Arduino.Properties.Resources.DriverID, "MaxIncrement"));
+                this.maxIncrement = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxIncrement"));
             }
             catch {
                 this.maxIncrement = 254;
             }
+
+            SerialConnection.Parity = SerialParity.None;
+            SerialConnection.PortName = this.comPort;
+            SerialConnection.StopBits = SerialStopBits.One;
+            SerialConnection.Speed = SerialSpeed.ps9600;
 
         }
 
@@ -154,11 +174,12 @@ namespace ASCOM.Arduino
 
         public bool Absolute
         {
-            get { return false; }
+            get { return true; }
         }
 
         public void Halt()
         {
+            SerialConnection.Transmit(": H #");
         }
 
         public bool IsMoving
@@ -186,9 +207,7 @@ namespace ASCOM.Arduino
         // Method for actually attempting to connect to the focuser
         public bool connectFocuser()
         {
-            port = new SerialPort("COM3", 9600, Parity.None, 8, StopBits.One);
-            port.Open();
-
+            SerialConnection.Connected = true;
 
             return true;
         }
@@ -196,7 +215,7 @@ namespace ASCOM.Arduino
         // Method for disconnecting the focuser
         public bool disconnectFocuser()
         {
-            port.Close();
+            SerialConnection.Connected = false;
 
             return true;
         }
@@ -215,14 +234,44 @@ namespace ASCOM.Arduino
         {
             this.isMoving = true;
 
-            if( val > 0){
-                port.Write(": M " + val.ToString() +" #");
+            int move = val - this.position; // Calculate the move distance based on where we are and where we want to be
+
+            if (Math.Abs(move) > 200) // Move faster if we have to slew for a long time
+            {
+                FastMove(move);
             }
-            else if (val < 0){
-                port.Write(": M " + val.ToString() + " #");
+            else
+            {
+                SlowMove(move);
             }
 
+            this.position = val;
+
             this.isMoving = false;
+        }
+
+        public void MoveAndWait(int val)
+        {
+            SerialConnection.Transmit(": M " + val + " #");
+        }
+
+        public void FastMove(int val)
+        {
+            int fastMove = val - 50; // Calculate the number of steps for fast movement
+            SerialConnection.Transmit(": S 100 #"); // Set rpm to 100
+            SerialConnection.Transmit(": T " + (int)StepTypes.SINGLE + " #"); // Set step type to single.
+
+            this.MoveAndWait(fastMove); // Move and wait for return
+
+            this.SlowMove(50); // do the last 50 steps precisely
+        }
+
+        public void SlowMove(int val)
+        {
+            SerialConnection.Transmit(": S 10 #"); // Set rpm to 10
+            SerialConnection.Transmit(": T " + (int)StepTypes.MICROSTEP + " #"); // Set step type to microstepping
+
+            this.MoveAndWait(val); // Move and wait for return
         }
 
         public int Position

@@ -66,23 +66,5 @@ namespace ASCOM.Arduino.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Focuser.
-        /// </summary>
-        internal static string DeviceType {
-            get {
-                return ResourceManager.GetString("DeviceType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ASCOM.Arduino.Focuser.
-        /// </summary>
-        internal static string DriverID {
-            get {
-                return ResourceManager.GetString("DriverID", resourceCulture);
-            }
-        }
     }
 }

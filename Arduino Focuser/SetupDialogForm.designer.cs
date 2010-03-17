@@ -40,7 +40,7 @@ namespace ASCOM.Arduino
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOK.Location = new System.Drawing.Point(267, 103);
+            this.cmdOK.Location = new System.Drawing.Point(150, 103);
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.Size = new System.Drawing.Size(59, 24);
             this.cmdOK.TabIndex = 0;
@@ -52,7 +52,7 @@ namespace ASCOM.Arduino
             // 
             this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(267, 133);
+            this.cmdCancel.Location = new System.Drawing.Point(150, 133);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(59, 25);
             this.cmdCancel.TabIndex = 1;
@@ -65,7 +65,7 @@ namespace ASCOM.Arduino
             this.picASCOM.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picASCOM.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picASCOM.Image = global::ASCOM.Arduino.Properties.Resources.ASCOM;
-            this.picASCOM.Location = new System.Drawing.Point(278, 9);
+            this.picASCOM.Location = new System.Drawing.Point(161, 9);
             this.picASCOM.Name = "picASCOM";
             this.picASCOM.Size = new System.Drawing.Size(48, 56);
             this.picASCOM.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -78,9 +78,9 @@ namespace ASCOM.Arduino
             // 
             this.comPort.FormattingEnabled = true;
             this.comPort.Items.AddRange(new object[] {
-            "COM1"});
-            this.comPort.SelectedValue = profile.GetValue(global::ASCOM.Arduino.Properties.Resources.DriverID, "ComPort");
-            this.comPort.Location = new System.Drawing.Point(12, 25);
+            "COM1",
+            "COM3"});
+            this.comPort.Location = new System.Drawing.Point(12, 28);
             this.comPort.Name = "comPort";
             this.comPort.Size = new System.Drawing.Size(121, 21);
             this.comPort.TabIndex = 4;
@@ -91,15 +91,15 @@ namespace ASCOM.Arduino
             this.comPortLabel.AutoSize = true;
             this.comPortLabel.Location = new System.Drawing.Point(12, 9);
             this.comPortLabel.Name = "comPortLabel";
-            this.comPortLabel.Size = new System.Drawing.Size(107, 13);
+            this.comPortLabel.Size = new System.Drawing.Size(53, 13);
             this.comPortLabel.TabIndex = 5;
-            this.comPortLabel.Text = "COM Port for Arduino";
+            this.comPortLabel.Text = "COM Port";
             // 
             // SetupDialogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(336, 166);
+            this.ClientSize = new System.Drawing.Size(219, 166);
             this.Controls.Add(this.comPortLabel);
             this.Controls.Add(this.comPort);
             this.Controls.Add(this.picASCOM);
@@ -125,5 +125,7 @@ namespace ASCOM.Arduino
         private System.Windows.Forms.PictureBox picASCOM;
         private System.Windows.Forms.ComboBox comPort;
         private System.Windows.Forms.Label comPortLabel;
+
+        public ASCOM.Utilities.Profile profile;
     }
 }

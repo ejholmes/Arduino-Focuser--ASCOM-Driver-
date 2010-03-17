@@ -11,19 +11,18 @@ namespace ASCOM.Arduino
     [ComVisible(false)]					// Form not registered for COM!
     public partial class SetupDialogForm : Form
     {
-        public ASCOM.Utilities.Profile profile;
 
         public SetupDialogForm()
         {
             profile = new ASCOM.Utilities.Profile();
-            profile.DeviceType = global::ASCOM.Arduino.Properties.Resources.DeviceType;
+            profile.DeviceType = "Focuser";
 
             InitializeComponent();
         }
 
         private void cmdOK_Click(object sender, EventArgs e)
         {
-            profile.WriteValue(global::ASCOM.Arduino.Properties.Resources.DriverID, "ComPort", this.comPort.SelectedItem.ToString());
+            profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "ComPort", this.comPort.SelectedItem.ToString());
             Dispose();
         }
 

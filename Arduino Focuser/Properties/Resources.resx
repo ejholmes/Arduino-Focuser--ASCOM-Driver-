@@ -156,10 +156,4 @@
         815YdSGsKdwre+Ff7n8cQI4gUBMAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="DeviceType" xml:space="preserve">
-    <value>Focuser</value>
-  </data>
-  <data name="DriverID" xml:space="preserve">
-    <value>ASCOM.Arduino.Focuser</value>
-  </data>
 </root>
