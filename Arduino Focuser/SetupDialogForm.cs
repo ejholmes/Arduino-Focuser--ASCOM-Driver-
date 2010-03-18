@@ -18,6 +18,8 @@ namespace ASCOM.Arduino
             profile.DeviceType = "Focuser";
 
             InitializeComponent();
+
+            this.comPort.Items.AddRange(new ASCOM.Utilities.Serial().AvailableCOMPorts);
         }
 
         private void cmdOK_Click(object sender, EventArgs e)

@@ -77,9 +77,6 @@ namespace ASCOM.Arduino
             // comPort
             // 
             this.comPort.FormattingEnabled = true;
-            this.comPort.Items.AddRange(new object[] {
-            "COM1",
-            "COM3"});
             this.comPort.Location = new System.Drawing.Point(12, 28);
             this.comPort.Name = "comPort";
             this.comPort.Size = new System.Drawing.Size(121, 21);

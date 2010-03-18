@@ -216,9 +216,25 @@ namespace ASCOM.Arduino
 
             SerialConnection.Open();
 
-            //FocuserControl.Show();
+            /*while (SerialConnection.BytesToRead <= 0)
+            {
+                HC.WaitForMilliseconds(100);
+            }
+
+            string response = SerialConnection.ReadLine();
+
+            if (response == "Ready\r")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }*/
 
             return true;
+
+            //FocuserControl.Show();
         }
 
         // Method for disconnecting the focuser
