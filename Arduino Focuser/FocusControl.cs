@@ -17,6 +17,17 @@ namespace ASCOM.Arduino
             InitializeComponent();
 
             this.populatePresets();
+            this.updateCurrentPosition();
+        }
+
+        public void updateCurrentPosition(string text)
+        {
+            this.currentPosition.Text = text;
+        }
+
+        public void updateCurrentPosition()
+        {
+            this.currentPosition.Text = this.focuser.Position.ToString();
         }
 
         private void populatePresets()
@@ -49,7 +60,6 @@ namespace ASCOM.Arduino
 
         private void openPreset(string key)
         {
-            this.groupboxSelectedPreset.Text = key;
             this.presetPosition.Text = this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, key, this.subkey);
         }
 

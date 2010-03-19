@@ -28,104 +28,121 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.comboSelectPreset = new System.Windows.Forms.ComboBox();
-            this.tooltipLoadPreset = new System.Windows.Forms.ToolTip(this.components);
-            this.buttonLoadPreset = new System.Windows.Forms.Button();
-            this.tooltipSavePreset = new System.Windows.Forms.ToolTip(this.components);
-            this.groupboxSelectedPreset = new System.Windows.Forms.GroupBox();
-            this.buttonDeletePreset = new System.Windows.Forms.Button();
-            this.presetPosition = new System.Windows.Forms.Label();
-            this.labelPresetPosition = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonSavePreset = new System.Windows.Forms.Button();
-            this.groupboxSelectedPreset.SuspendLayout();
+            this.buttonLoadPreset = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.presetPosition = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.currentPosition = new System.Windows.Forms.Label();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboSelectPreset
             // 
             this.comboSelectPreset.FormattingEnabled = true;
-            this.comboSelectPreset.Location = new System.Drawing.Point(46, 13);
+            this.comboSelectPreset.Location = new System.Drawing.Point(6, 16);
             this.comboSelectPreset.Name = "comboSelectPreset";
             this.comboSelectPreset.Size = new System.Drawing.Size(101, 21);
             this.comboSelectPreset.TabIndex = 0;
             this.comboSelectPreset.SelectedIndexChanged += new System.EventHandler(this.comboSelectPreset_SelectedIndexChanged);
             // 
-            // buttonLoadPreset
+            // groupBox1
             // 
-            this.buttonLoadPreset.Image = global::ASCOM.Arduino.Properties.Resources.open;
-            this.buttonLoadPreset.Location = new System.Drawing.Point(153, 8);
-            this.buttonLoadPreset.Name = "buttonLoadPreset";
-            this.buttonLoadPreset.Size = new System.Drawing.Size(28, 28);
-            this.buttonLoadPreset.TabIndex = 1;
-            this.tooltipLoadPreset.SetToolTip(this.buttonLoadPreset, "Load preset");
-            this.buttonLoadPreset.UseVisualStyleBackColor = true;
-            this.buttonLoadPreset.Click += new System.EventHandler(this.buttonLoadPreset_Click);
-            // 
-            // groupboxSelectedPreset
-            // 
-            this.groupboxSelectedPreset.Controls.Add(this.buttonDeletePreset);
-            this.groupboxSelectedPreset.Controls.Add(this.presetPosition);
-            this.groupboxSelectedPreset.Controls.Add(this.labelPresetPosition);
-            this.groupboxSelectedPreset.Location = new System.Drawing.Point(12, 52);
-            this.groupboxSelectedPreset.Name = "groupboxSelectedPreset";
-            this.groupboxSelectedPreset.Size = new System.Drawing.Size(169, 40);
-            this.groupboxSelectedPreset.TabIndex = 5;
-            this.groupboxSelectedPreset.TabStop = false;
-            this.groupboxSelectedPreset.Text = "(None)";
-            // 
-            // buttonDeletePreset
-            // 
-            this.buttonDeletePreset.Image = global::ASCOM.Arduino.Properties.Resources.delete;
-            this.buttonDeletePreset.Location = new System.Drawing.Point(135, 9);
-            this.buttonDeletePreset.Name = "buttonDeletePreset";
-            this.buttonDeletePreset.Size = new System.Drawing.Size(28, 28);
-            this.buttonDeletePreset.TabIndex = 2;
-            this.buttonDeletePreset.UseVisualStyleBackColor = true;
-            this.buttonDeletePreset.Click += new System.EventHandler(this.buttonDeletePreset_Click);
-            // 
-            // presetPosition
-            // 
-            this.presetPosition.AutoSize = true;
-            this.presetPosition.Location = new System.Drawing.Point(94, 20);
-            this.presetPosition.Name = "presetPosition";
-            this.presetPosition.Size = new System.Drawing.Size(0, 13);
-            this.presetPosition.TabIndex = 1;
-            // 
-            // labelPresetPosition
-            // 
-            this.labelPresetPosition.AutoSize = true;
-            this.labelPresetPosition.Location = new System.Drawing.Point(7, 19);
-            this.labelPresetPosition.Name = "labelPresetPosition";
-            this.labelPresetPosition.Size = new System.Drawing.Size(80, 13);
-            this.labelPresetPosition.TabIndex = 0;
-            this.labelPresetPosition.Text = "Preset Position:";
+            this.groupBox1.Controls.Add(this.buttonSavePreset);
+            this.groupBox1.Controls.Add(this.buttonLoadPreset);
+            this.groupBox1.Controls.Add(this.comboSelectPreset);
+            this.groupBox1.Location = new System.Drawing.Point(9, 7);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(227, 45);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Presets";
             // 
             // buttonSavePreset
             // 
-            this.buttonSavePreset.Image = global::ASCOM.Arduino.Properties.Resources.save;
-            this.buttonSavePreset.Location = new System.Drawing.Point(12, 8);
+            this.buttonSavePreset.Location = new System.Drawing.Point(170, 15);
             this.buttonSavePreset.Name = "buttonSavePreset";
-            this.buttonSavePreset.Size = new System.Drawing.Size(28, 28);
-            this.buttonSavePreset.TabIndex = 1;
+            this.buttonSavePreset.Size = new System.Drawing.Size(51, 23);
+            this.buttonSavePreset.TabIndex = 3;
+            this.buttonSavePreset.Text = "Save";
             this.buttonSavePreset.UseVisualStyleBackColor = true;
             this.buttonSavePreset.Click += new System.EventHandler(this.buttonSavePreset_Click);
+            // 
+            // buttonLoadPreset
+            // 
+            this.buttonLoadPreset.Location = new System.Drawing.Point(113, 15);
+            this.buttonLoadPreset.Name = "buttonLoadPreset";
+            this.buttonLoadPreset.Size = new System.Drawing.Size(51, 23);
+            this.buttonLoadPreset.TabIndex = 1;
+            this.buttonLoadPreset.Text = "Load";
+            this.buttonLoadPreset.UseVisualStyleBackColor = true;
+            this.buttonLoadPreset.Click += new System.EventHandler(this.buttonLoadPreset_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.presetPosition);
+            this.groupBox2.Location = new System.Drawing.Point(126, 59);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(110, 45);
+            this.groupBox2.TabIndex = 2;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Preset Position";
+            // 
+            // presetPosition
+            // 
+            this.presetPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.presetPosition.AutoSize = true;
+            this.presetPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.presetPosition.Location = new System.Drawing.Point(39, 16);
+            this.presetPosition.Name = "presetPosition";
+            this.presetPosition.Size = new System.Drawing.Size(0, 18);
+            this.presetPosition.TabIndex = 0;
+            this.presetPosition.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.currentPosition);
+            this.groupBox3.Location = new System.Drawing.Point(9, 59);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(110, 45);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Current Position";
+            // 
+            // currentPosition
+            // 
+            this.currentPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.currentPosition.AutoSize = true;
+            this.currentPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.currentPosition.Location = new System.Drawing.Point(37, 16);
+            this.currentPosition.Name = "currentPosition";
+            this.currentPosition.Size = new System.Drawing.Size(0, 18);
+            this.currentPosition.TabIndex = 0;
+            this.currentPosition.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // FocusControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(193, 104);
-            this.Controls.Add(this.groupboxSelectedPreset);
-            this.Controls.Add(this.buttonSavePreset);
-            this.Controls.Add(this.buttonLoadPreset);
-            this.Controls.Add(this.comboSelectPreset);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.ClientSize = new System.Drawing.Size(246, 112);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "FocusControl";
             this.Text = "Focuser Toolbox";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FocusControl_FormClosing);
-            this.groupboxSelectedPreset.ResumeLayout(false);
-            this.groupboxSelectedPreset.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -141,13 +158,12 @@
         private ASCOM.Utilities.Profile profile;
         private string subkey = "Presets";
         private System.Windows.Forms.ComboBox comboSelectPreset;
+        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonLoadPreset;
+        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button buttonSavePreset;
-        private System.Windows.Forms.ToolTip tooltipLoadPreset;
-        private System.Windows.Forms.ToolTip tooltipSavePreset;
-        private System.Windows.Forms.GroupBox groupboxSelectedPreset;
         private System.Windows.Forms.Label presetPosition;
-        private System.Windows.Forms.Label labelPresetPosition;
-        private System.Windows.Forms.Button buttonDeletePreset;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label currentPosition;
     }
 }

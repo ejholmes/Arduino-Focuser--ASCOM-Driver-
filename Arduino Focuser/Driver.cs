@@ -245,6 +245,9 @@ namespace ASCOM.Arduino
         {
             this.isMoving = true;
 
+            if (FocuserControl != null)
+                this.FocuserControl.updateCurrentPosition("Moving...");
+
             int move = val - this.position; // Calculate the move distance based on where we are and where we want to be
 
             if (Math.Abs(move) > (int)SpeedCutoff.FAST) // Move faster if we have to slew for a long time
@@ -257,6 +260,9 @@ namespace ASCOM.Arduino
             }
 
             this.position = val;
+
+            if (FocuserControl != null)
+                this.FocuserControl.updateCurrentPosition();
 
             profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position", this.position.ToString());
 
