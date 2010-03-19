@@ -130,7 +130,7 @@ namespace ASCOM.Arduino
             
 
 
-            FocuserControl = new FocusControl(this);
+            FocuserControl = new FocusControl(this, profile);
         }
 
         #region ASCOM Registration
@@ -216,25 +216,9 @@ namespace ASCOM.Arduino
 
             SerialConnection.Open();
 
-            /*while (SerialConnection.BytesToRead <= 0)
-            {
-                HC.WaitForMilliseconds(100);
-            }
-
-            string response = SerialConnection.ReadLine();
-
-            if (response == "Ready\r")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }*/
+            FocuserControl.Show();
 
             return true;
-
-            //FocuserControl.Show();
         }
 
         // Method for disconnecting the focuser
@@ -242,7 +226,7 @@ namespace ASCOM.Arduino
         {
             SerialConnection.Close();
 
-            //FocuserControl.Dispose();
+            FocuserControl.Dispose();
 
             return true;
         }
@@ -279,7 +263,7 @@ namespace ASCOM.Arduino
             this.isMoving = false;
         }
 
-        public void MoveAndWait(int val)
+        private void MoveAndWait(int val)
         {
             SerialConnection.Write(": M " + val + " #");
 
@@ -295,7 +279,7 @@ namespace ASCOM.Arduino
             }
         }
 
-        public void FastMove(int val)
+        private void FastMove(int val)
         {
             int fastMove = val - (int)SpeedCutoff.SLOW; // Calculate the number of steps for fast movement
             SerialConnection.Write(": S " + (int)SlewSpeeds.FAST + " #"); // Set rpm to 100
@@ -306,7 +290,7 @@ namespace ASCOM.Arduino
             this.SlowMove((int)SpeedCutoff.SLOW); // do the last 50 steps precisely
         }
 
-        public void SlowMove(int val)
+        private void SlowMove(int val)
         {
             SerialConnection.Write(": S " + (int)SlewSpeeds.SLOW + " #"); // Set rpm to 10
             SerialConnection.Write(": T " + (int)StepTypes.MICROSTEP + " #"); // Set step type to microstepping
