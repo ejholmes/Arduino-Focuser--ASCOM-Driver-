@@ -95,13 +95,12 @@
             // presetPosition
             // 
             this.presetPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.presetPosition.AutoSize = true;
-            this.presetPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.presetPosition.Location = new System.Drawing.Point(39, 16);
+            this.presetPosition.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.presetPosition.Location = new System.Drawing.Point(6, 18);
             this.presetPosition.Name = "presetPosition";
-            this.presetPosition.Size = new System.Drawing.Size(0, 18);
+            this.presetPosition.Size = new System.Drawing.Size(98, 18);
             this.presetPosition.TabIndex = 0;
-            this.presetPosition.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.presetPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox3
             // 
@@ -116,19 +115,18 @@
             // currentPosition
             // 
             this.currentPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.currentPosition.AutoSize = true;
-            this.currentPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.currentPosition.Location = new System.Drawing.Point(37, 16);
+            this.currentPosition.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.currentPosition.Location = new System.Drawing.Point(6, 18);
             this.currentPosition.Name = "currentPosition";
-            this.currentPosition.Size = new System.Drawing.Size(0, 18);
+            this.currentPosition.Size = new System.Drawing.Size(98, 18);
             this.currentPosition.TabIndex = 0;
-            this.currentPosition.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.currentPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FocusControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(246, 112);
+            this.ClientSize = new System.Drawing.Size(246, 113);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -140,9 +138,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FocusControl_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }

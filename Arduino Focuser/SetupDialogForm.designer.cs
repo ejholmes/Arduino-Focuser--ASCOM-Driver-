@@ -38,9 +38,9 @@ namespace ASCOM.Arduino
             // 
             // cmdOK
             // 
-            this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmdOK.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOK.Location = new System.Drawing.Point(150, 103);
+            this.cmdOK.Location = new System.Drawing.Point(12, 64);
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.Size = new System.Drawing.Size(59, 24);
             this.cmdOK.TabIndex = 0;
@@ -52,7 +52,7 @@ namespace ASCOM.Arduino
             // 
             this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(150, 133);
+            this.cmdCancel.Location = new System.Drawing.Point(77, 64);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(59, 25);
             this.cmdCancel.TabIndex = 1;
@@ -96,7 +96,7 @@ namespace ASCOM.Arduino
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(219, 166);
+            this.ClientSize = new System.Drawing.Size(219, 100);
             this.Controls.Add(this.comPortLabel);
             this.Controls.Add(this.comPort);
             this.Controls.Add(this.picASCOM);

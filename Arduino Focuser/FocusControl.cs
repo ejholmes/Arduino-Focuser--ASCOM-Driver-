@@ -22,12 +22,12 @@ namespace ASCOM.Arduino
 
         public void updateCurrentPosition(string text)
         {
-            this.currentPosition.Text = text;
+            this.currentPosition.Text = text + "\r";
         }
 
         public void updateCurrentPosition()
         {
-            this.currentPosition.Text = this.focuser.Position.ToString();
+            this.currentPosition.Text = this.focuser.Position.ToString() + "\r";
         }
 
         private void populatePresets()
@@ -52,10 +52,13 @@ namespace ASCOM.Arduino
             int position = this.focuser.Position;
             string title = this.comboSelectPreset.Text;
 
-            this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, title, position.ToString(), this.subkey);
+            if (title != "")
+            {
+                this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, title, position.ToString(), this.subkey);
 
-            this.populatePresets();
-            this.openPreset(title);
+                this.populatePresets();
+                this.openPreset(title);
+            }
         }
 
         private void openPreset(string key)
@@ -65,11 +68,12 @@ namespace ASCOM.Arduino
 
         private void buttonLoadPreset_Click(object sender, EventArgs e)
         {
-            string selected = this.comboSelectPreset.SelectedItem.ToString();
-
-            int position = Int32.Parse(this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, selected, this.subkey));
-
-            this.focuser.Move(position);
+            if (this.comboSelectPreset.SelectedItem != null)
+            {
+                string selected = this.comboSelectPreset.SelectedItem.ToString();
+                int position = Int32.Parse(this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, selected, this.subkey));
+                this.focuser.Move(position);
+            }
         }
 
         private void comboSelectPreset_SelectedIndexChanged(object sender, EventArgs e)
