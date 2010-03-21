@@ -99,7 +99,7 @@ namespace ASCOM.Arduino
                 int newPosition = Int32.Parse(this.textboxCustomPosition.Text);
 
                 if (newPosition < this.focuser.MaxStep)
-                    this.focuser.position = newPosition;
+                    this.focuser.setPositionOnFocuser(newPosition);
             }
         }
     }

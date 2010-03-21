@@ -111,24 +111,16 @@ namespace ASCOM.Arduino
             catch { this.comPort = null; }
 
             try { this.stepSize = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "StepSize"));}
-            catch { this.stepSize = 100; } // Step size in microns
+            catch { this.stepSize = 2; } // Step size in microns
 
             try { this.maxStep = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxStep")); }
-            catch { this.maxStep = 25000; }
+            catch { this.maxStep = 2147483646; }
 
             try { this.maxIncrement = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxIncrement")); }
             catch { this.maxIncrement = 254; }
 
             try { this.position = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position")); }
             catch { this.position = 0; }
-
-            /*SerialConnection.Parity = SerialParity.None;
-            SerialConnection.PortName = this.comPort;
-            SerialConnection.StopBits = SerialStopBits.One;
-            SerialConnection.Speed = SerialSpeed.ps9600;*/
-
-            
-
 
             FocuserControl = new FocusControl(this, profile);
         }
@@ -216,6 +208,8 @@ namespace ASCOM.Arduino
 
             SerialConnection.Open();
 
+            this.setPositionOnFocuser(this.position);
+
             FocuserControl.Show();
 
             return true;
@@ -248,16 +242,7 @@ namespace ASCOM.Arduino
             if (FocuserControl != null)
                 this.FocuserControl.updateCurrentPosition("Moving...");
 
-            int move = val - this.position; // Calculate the move distance based on where we are and where we want to be
-
-            if (Math.Abs(move) > (int)SpeedCutoff.FAST) // Move faster if we have to slew for a long time
-            {
-                FastMove(move);
-            }
-            else
-            {
-                SlowMove(move);
-            }
+            this.MoveAndWait(val);
 
             if (FocuserControl != null)
                 this.FocuserControl.updateCurrentPosition();
@@ -272,6 +257,11 @@ namespace ASCOM.Arduino
             SerialConnection.DiscardInBuffer();
             SerialConnection.Write(": M " + val + " #");
 
+            this.position = this.getPositionFromFocuser();
+        }
+
+        public int getPositionFromFocuser()
+        {
             while (SerialConnection.BytesToRead == 0)
             {
                 HC.WaitForMilliseconds(100);
@@ -281,26 +271,14 @@ namespace ASCOM.Arduino
             System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"[-+]?\b\d+\b");
             System.Text.RegularExpressions.Match m = regex.Match(ret);
 
-            this.position += Int32.Parse(m.ToString());
+            return Int32.Parse(m.ToString());
         }
 
-        private void FastMove(int val)
+        public void setPositionOnFocuser(int val)
         {
-            int fastMove = val - (int)SpeedCutoff.SLOW; // Calculate the number of steps for fast movement
-            SerialConnection.Write(": S " + (int)SlewSpeeds.FAST + " #"); // Set rpm to 100
-            SerialConnection.Write(": T " + (int)StepTypes.SINGLE + " #"); // Set step type to single.
+            SerialConnection.Write(": P " + val + " #");
 
-            this.MoveAndWait(fastMove); // Move and wait for return
-
-            this.SlowMove((int)SpeedCutoff.SLOW); // do the last 50 steps precisely
-        }
-
-        private void SlowMove(int val)
-        {
-            SerialConnection.Write(": S " + (int)SlewSpeeds.SLOW + " #"); // Set rpm to 10
-            SerialConnection.Write(": T " + (int)StepTypes.MICROSTEP + " #"); // Set step type to microstepping
-
-            this.MoveAndWait(val); // Move and wait for return
+            this.position = this.getPositionFromFocuser();
         }
 
         public int Position
