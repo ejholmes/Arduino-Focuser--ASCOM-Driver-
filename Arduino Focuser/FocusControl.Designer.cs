@@ -32,13 +32,17 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonSavePreset = new System.Windows.Forms.Button();
             this.buttonLoadPreset = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupboxPresetPosition = new System.Windows.Forms.GroupBox();
             this.presetPosition = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupboxCurrentPosition = new System.Windows.Forms.GroupBox();
             this.currentPosition = new System.Windows.Forms.Label();
+            this.groupboxOptions = new System.Windows.Forms.GroupBox();
+            this.buttonSetPosition = new System.Windows.Forms.Button();
+            this.textboxCustomPosition = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.groupboxPresetPosition.SuspendLayout();
+            this.groupboxCurrentPosition.SuspendLayout();
+            this.groupboxOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboSelectPreset
@@ -82,15 +86,15 @@
             this.buttonLoadPreset.UseVisualStyleBackColor = true;
             this.buttonLoadPreset.Click += new System.EventHandler(this.buttonLoadPreset_Click);
             // 
-            // groupBox2
+            // groupboxPresetPosition
             // 
-            this.groupBox2.Controls.Add(this.presetPosition);
-            this.groupBox2.Location = new System.Drawing.Point(126, 59);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(110, 45);
-            this.groupBox2.TabIndex = 2;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Preset Position";
+            this.groupboxPresetPosition.Controls.Add(this.presetPosition);
+            this.groupboxPresetPosition.Location = new System.Drawing.Point(126, 59);
+            this.groupboxPresetPosition.Name = "groupboxPresetPosition";
+            this.groupboxPresetPosition.Size = new System.Drawing.Size(110, 45);
+            this.groupboxPresetPosition.TabIndex = 2;
+            this.groupboxPresetPosition.TabStop = false;
+            this.groupboxPresetPosition.Text = "Preset Position";
             // 
             // presetPosition
             // 
@@ -102,15 +106,15 @@
             this.presetPosition.TabIndex = 0;
             this.presetPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // groupBox3
+            // groupboxCurrentPosition
             // 
-            this.groupBox3.Controls.Add(this.currentPosition);
-            this.groupBox3.Location = new System.Drawing.Point(9, 59);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(110, 45);
-            this.groupBox3.TabIndex = 3;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Current Position";
+            this.groupboxCurrentPosition.Controls.Add(this.currentPosition);
+            this.groupboxCurrentPosition.Location = new System.Drawing.Point(9, 59);
+            this.groupboxCurrentPosition.Name = "groupboxCurrentPosition";
+            this.groupboxCurrentPosition.Size = new System.Drawing.Size(110, 45);
+            this.groupboxCurrentPosition.TabIndex = 3;
+            this.groupboxCurrentPosition.TabStop = false;
+            this.groupboxCurrentPosition.Text = "Current Position";
             // 
             // currentPosition
             // 
@@ -122,13 +126,42 @@
             this.currentPosition.TabIndex = 0;
             this.currentPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // groupboxOptions
+            // 
+            this.groupboxOptions.Controls.Add(this.buttonSetPosition);
+            this.groupboxOptions.Controls.Add(this.textboxCustomPosition);
+            this.groupboxOptions.Location = new System.Drawing.Point(9, 110);
+            this.groupboxOptions.Name = "groupboxOptions";
+            this.groupboxOptions.Size = new System.Drawing.Size(227, 48);
+            this.groupboxOptions.TabIndex = 4;
+            this.groupboxOptions.TabStop = false;
+            this.groupboxOptions.Text = "Options";
+            // 
+            // buttonSetPosition
+            // 
+            this.buttonSetPosition.Location = new System.Drawing.Point(75, 18);
+            this.buttonSetPosition.Name = "buttonSetPosition";
+            this.buttonSetPosition.Size = new System.Drawing.Size(146, 23);
+            this.buttonSetPosition.TabIndex = 1;
+            this.buttonSetPosition.Text = "Set Custom Position";
+            this.buttonSetPosition.UseVisualStyleBackColor = true;
+            this.buttonSetPosition.Click += new System.EventHandler(this.buttonSetPosition_Click);
+            // 
+            // textboxCustomPosition
+            // 
+            this.textboxCustomPosition.Location = new System.Drawing.Point(9, 20);
+            this.textboxCustomPosition.Name = "textboxCustomPosition";
+            this.textboxCustomPosition.Size = new System.Drawing.Size(60, 20);
+            this.textboxCustomPosition.TabIndex = 0;
+            // 
             // FocusControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(246, 113);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
+            this.ClientSize = new System.Drawing.Size(246, 165);
+            this.Controls.Add(this.groupboxOptions);
+            this.Controls.Add(this.groupboxCurrentPosition);
+            this.Controls.Add(this.groupboxPresetPosition);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -137,8 +170,10 @@
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FocusControl_FormClosing);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
+            this.groupboxPresetPosition.ResumeLayout(false);
+            this.groupboxCurrentPosition.ResumeLayout(false);
+            this.groupboxOptions.ResumeLayout(false);
+            this.groupboxOptions.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -156,10 +191,13 @@
         private System.Windows.Forms.ComboBox comboSelectPreset;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonLoadPreset;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupboxPresetPosition;
         private System.Windows.Forms.Button buttonSavePreset;
         private System.Windows.Forms.Label presetPosition;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupboxCurrentPosition;
         private System.Windows.Forms.Label currentPosition;
+        private System.Windows.Forms.GroupBox groupboxOptions;
+        private System.Windows.Forms.Button buttonSetPosition;
+        private System.Windows.Forms.TextBox textboxCustomPosition;
     }
 }

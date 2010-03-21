@@ -91,5 +91,16 @@ namespace ASCOM.Arduino
                 this.populatePresets();
             }
         }
+
+        private void buttonSetPosition_Click(object sender, EventArgs e)
+        {
+            if (this.textboxCustomPosition.Text != "")
+            {
+                int newPosition = Int32.Parse(this.textboxCustomPosition.Text);
+
+                if (newPosition < this.focuser.MaxStep)
+                    this.focuser.position = newPosition;
+            }
+        }
     }
 }

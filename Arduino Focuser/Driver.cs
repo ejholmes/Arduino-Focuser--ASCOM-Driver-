@@ -89,7 +89,7 @@ namespace ASCOM.Arduino
 
         private bool isMoving = false;
 
-        private int position = 0;
+        public int position = 0;
 
         private FocusControl FocuserControl;
 
