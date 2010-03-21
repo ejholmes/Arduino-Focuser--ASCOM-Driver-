@@ -259,8 +259,6 @@ namespace ASCOM.Arduino
                 SlowMove(move);
             }
 
-            this.position = val;
-
             if (FocuserControl != null)
                 this.FocuserControl.updateCurrentPosition();
 
@@ -271,6 +269,7 @@ namespace ASCOM.Arduino
 
         private void MoveAndWait(int val)
         {
+            SerialConnection.DiscardInBuffer();
             SerialConnection.Write(": M " + val + " #");
 
             while (SerialConnection.BytesToRead == 0)
@@ -278,11 +277,11 @@ namespace ASCOM.Arduino
                 HC.WaitForMilliseconds(100);
             }
 
-            if (SerialConnection.ReadLine() == "M DONE\r")
-            {
-                SerialConnection.DiscardInBuffer();
-                return;
-            }
+            string ret = SerialConnection.ReadLine();
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"[-+]?\b\d+\b");
+            System.Text.RegularExpressions.Match m = regex.Match(ret);
+
+            this.position += Int32.Parse(m.ToString());
         }
 
         private void FastMove(int val)
