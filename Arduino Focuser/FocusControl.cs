@@ -15,9 +15,6 @@ namespace ASCOM.Arduino
             this.focuser = f;
             this.profile = p;
             InitializeComponent();
-
-            this.populatePresets();
-            this.updateCurrentPosition();
         }
 
         public void updateCurrentPosition(string text)
@@ -99,7 +96,20 @@ namespace ASCOM.Arduino
                 int newPosition = Int32.Parse(this.textboxCustomPosition.Text);
 
                 if (newPosition < this.focuser.MaxStep)
-                    this.focuser.setPositionOnFocuser(newPosition);
+                    this.focuser.SetPositionOnFocuser(newPosition);
+            }
+        }
+
+        private void checkboxReverse_CheckedChanged(object sender, EventArgs e)
+        {
+            switch (this.checkboxReverse.Checked)
+            {
+                case true:
+                    this.focuser.ReverseMotorDirection(true);
+                    break;
+                case false:
+                    this.focuser.ReverseMotorDirection(false);
+                    break;
             }
         }
     }

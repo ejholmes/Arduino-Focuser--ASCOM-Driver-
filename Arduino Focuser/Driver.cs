@@ -91,6 +91,8 @@ namespace ASCOM.Arduino
 
         public int position = 0;
 
+        private bool reversed = false;
+
         private FocusControl FocuserControl;
 
         private SerialPort SerialConnection;
@@ -114,13 +116,16 @@ namespace ASCOM.Arduino
             catch { this.stepSize = 2; } // Step size in microns
 
             try { this.maxStep = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxStep")); }
-            catch { this.maxStep = 2147483646; }
+            catch { this.maxStep = 1000000; }
 
             try { this.maxIncrement = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxIncrement")); }
-            catch { this.maxIncrement = 254; }
+            catch { this.maxIncrement = this.maxStep; }
 
             try { this.position = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position")); }
             catch { this.position = 0; }
+
+            try { this.reversed = (Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed")) == 0) ? false : true; }
+            catch { this.reversed = false; }
 
             FocuserControl = new FocusControl(this, profile);
         }
@@ -208,7 +213,11 @@ namespace ASCOM.Arduino
 
             SerialConnection.Open();
 
-            this.setPositionOnFocuser(this.position);
+            HC.WaitForMilliseconds(3000);
+            SerialConnection.DiscardInBuffer();
+
+            this.ReverseMotorDirection(this.reversed);
+            this.SetPositionOnFocuser(this.position);
 
             FocuserControl.Show();
 
@@ -223,6 +232,13 @@ namespace ASCOM.Arduino
             FocuserControl.Dispose();
 
             return true;
+        }
+
+        public void ReverseMotorDirection(bool reverse)
+        {
+            string rev = ((reverse) ? 1 : 0).ToString();
+            this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed", rev);
+            SerialConnection.Write(": R " + rev + " #");
         }
 
         public int MaxIncrement
@@ -257,10 +273,10 @@ namespace ASCOM.Arduino
             SerialConnection.DiscardInBuffer();
             SerialConnection.Write(": M " + val + " #");
 
-            this.position = this.getPositionFromFocuser();
+            this.position = this.GetPositionFromFocuser();
         }
 
-        public int getPositionFromFocuser()
+        public int GetPositionFromFocuser()
         {
             while (SerialConnection.BytesToRead == 0)
             {
@@ -274,11 +290,11 @@ namespace ASCOM.Arduino
             return Int32.Parse(m.ToString());
         }
 
-        public void setPositionOnFocuser(int val)
+        public void SetPositionOnFocuser(int val)
         {
             SerialConnection.Write(": P " + val + " #");
 
-            this.position = this.getPositionFromFocuser();
+            this.position = this.GetPositionFromFocuser();
         }
 
         public int Position
@@ -305,7 +321,7 @@ namespace ASCOM.Arduino
 
         public bool TempComp
         {
-            get { throw new PropertyNotImplementedException("TempComp", false); }
+            get { return false; }
             set { throw new PropertyNotImplementedException("TempComp", true); }
         }
 

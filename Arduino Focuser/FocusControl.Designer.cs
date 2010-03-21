@@ -39,10 +39,13 @@
             this.groupboxOptions = new System.Windows.Forms.GroupBox();
             this.buttonSetPosition = new System.Windows.Forms.Button();
             this.textboxCustomPosition = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkboxReverse = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupboxPresetPosition.SuspendLayout();
             this.groupboxCurrentPosition.SuspendLayout();
             this.groupboxOptions.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboSelectPreset
@@ -135,7 +138,7 @@
             this.groupboxOptions.Size = new System.Drawing.Size(227, 48);
             this.groupboxOptions.TabIndex = 4;
             this.groupboxOptions.TabStop = false;
-            this.groupboxOptions.Text = "Options";
+            this.groupboxOptions.Text = "Custom Position";
             // 
             // buttonSetPosition
             // 
@@ -154,11 +157,33 @@
             this.textboxCustomPosition.Size = new System.Drawing.Size(60, 20);
             this.textboxCustomPosition.TabIndex = 0;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkboxReverse);
+            this.groupBox2.Location = new System.Drawing.Point(9, 165);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(221, 54);
+            this.groupBox2.TabIndex = 5;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Reverse Motor Direction";
+            // 
+            // checkboxReverse
+            // 
+            this.checkboxReverse.AutoSize = true;
+            this.checkboxReverse.Location = new System.Drawing.Point(75, 24);
+            this.checkboxReverse.Name = "checkboxReverse";
+            this.checkboxReverse.Size = new System.Drawing.Size(66, 17);
+            this.checkboxReverse.TabIndex = 0;
+            this.checkboxReverse.Text = "Reverse";
+            this.checkboxReverse.UseVisualStyleBackColor = true;
+            this.checkboxReverse.CheckedChanged += new System.EventHandler(this.checkboxReverse_CheckedChanged);
+            // 
             // FocusControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(246, 165);
+            this.ClientSize = new System.Drawing.Size(246, 231);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupboxOptions);
             this.Controls.Add(this.groupboxCurrentPosition);
             this.Controls.Add(this.groupboxPresetPosition);
@@ -169,13 +194,23 @@
             this.Text = "Focuser Toolbox";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FocusControl_FormClosing);
+            this.Shown += new System.EventHandler(FocusControl_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupboxPresetPosition.ResumeLayout(false);
             this.groupboxCurrentPosition.ResumeLayout(false);
             this.groupboxOptions.ResumeLayout(false);
             this.groupboxOptions.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
+        }
+
+        void FocusControl_Shown(object sender, System.EventArgs e)
+        {
+            this.checkboxReverse.Checked = (System.Int32.Parse(this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed")) == 0) ? false : true;
+            this.populatePresets();
+            this.updateCurrentPosition();
         }
 
         void FocusControl_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
@@ -199,5 +234,7 @@
         private System.Windows.Forms.GroupBox groupboxOptions;
         private System.Windows.Forms.Button buttonSetPosition;
         private System.Windows.Forms.TextBox textboxCustomPosition;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox checkboxReverse;
     }
 }
