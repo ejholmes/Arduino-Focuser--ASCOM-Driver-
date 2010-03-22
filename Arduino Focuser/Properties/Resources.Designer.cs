@@ -66,26 +66,5 @@ namespace ASCOM.Arduino.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
-        internal static System.Drawing.Bitmap delete {
-            get {
-                object obj = ResourceManager.GetObject("delete", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap open {
-            get {
-                object obj = ResourceManager.GetObject("open", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap save {
-            get {
-                object obj = ResourceManager.GetObject("save", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

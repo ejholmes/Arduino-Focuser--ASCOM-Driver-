@@ -36,26 +36,6 @@ using ASCOM.Utilities;
 
 namespace ASCOM.Arduino
 {
-
-    public enum StepTypes
-    {
-        SINGLE = 1,
-        DOUBLE = 2,
-        INTERLEAVE = 3,
-        MICROSTEP = 8
-    }
-
-    public enum SpeedCutoff
-    {
-        FAST = 100, // If # of steps is greater than this, slew speed is fast
-        SLOW = 10 // The # of steps for precise steps
-    }
-
-    public enum SlewSpeeds // RPM's
-    {
-        FAST = 100,
-        SLOW = 10
-    }
     //
     // Your driver's ID is ASCOM.Arduino.Focuser
     //

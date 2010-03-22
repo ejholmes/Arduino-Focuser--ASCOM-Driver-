@@ -130,9 +130,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ASCOM.png" />
-    <None Include="Resources\delete.bmp" />
-    <None Include="Resources\save.bmp" />
-    <None Include="Resources\open.bmp" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
