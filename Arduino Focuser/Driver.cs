@@ -116,7 +116,7 @@ namespace ASCOM.Arduino
             catch { this.stepSize = 2; } // Step size in microns
 
             try { this.maxStep = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxStep")); }
-            catch { this.maxStep = 1000000; }
+            catch { this.maxStep = 400000; }
 
             try { this.maxIncrement = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxIncrement")); }
             catch { this.maxIncrement = this.maxStep; }
