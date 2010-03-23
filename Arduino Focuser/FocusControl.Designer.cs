@@ -407,6 +407,7 @@
                 this.updownIncrementalMove.Maximum = 
                 this.updownAbsolutePosition.Maximum = 
                 this.focuser.MaxStep;
+            this.updownIncrementalMove.Value = 1000;
         }
 
         void FocusControl_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
