@@ -5,16 +5,36 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace ASCOM.Arduino
 {
     public partial class FocusControl : Form
     {
+        private ManualResetEvent reset = new ManualResetEvent(false);
+
         public FocusControl(ASCOM.Arduino.Focuser f, ASCOM.Utilities.Profile p)
         {
             this.focuser = f;
             this.profile = p;
             InitializeComponent();
+        }
+
+        private void pollPosition(object o)
+        {
+            while (true)
+            {
+                this.buttonMoveTo.Enabled = true;
+                this.buttonSlewIn.Enabled = true;
+                this.buttonSlewOut.Enabled = true;
+
+                this.currentPosition.Text = this.focuser.Position.ToString();
+                while (this.focuser.IsMoving)
+                {
+                    this.buttonMoveTo.Enabled = false;
+                    this.currentPosition.Text = "Moving";
+                }
+            }
         }
 
         public void updateCurrentPosition(string text)
@@ -111,6 +131,47 @@ namespace ASCOM.Arduino
                     this.focuser.ReverseMotorDirection(false);
                     break;
             }
+        }
+
+        private void doBackgroundMove(object o)
+        {
+            this.focuser.Move((int)this.updownAbsolutePosition.Value);
+        }
+
+        private void buttonMoveTo_Click(object sender, EventArgs e)
+        {
+            if (this.updownAbsolutePosition.Value >= 0)
+                ThreadPool.QueueUserWorkItem(doBackgroundMove);
+        }
+
+        private void Halt(object sender, EventArgs e)
+        {
+            this.focuser.Halt();
+        }
+
+        void buttonSlewOut_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            this.focuser.Move(this.focuser.MaxStep);
+        }
+
+        void buttonSlewOut_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            this.focuser.Halt();
+        }
+
+        void buttonSlewIn_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            this.focuser.Move(0);
+        }
+
+        void buttonSlewIn_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            this.focuser.Halt();
+        }
+
+        private void buttonManualReset_Click(object sender, EventArgs e)
+        {
+            this.focuser.Reset();
         }
     }
 }

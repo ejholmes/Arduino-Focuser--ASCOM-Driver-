@@ -235,13 +235,7 @@ namespace ASCOM.Arduino
         {
             this.isMoving = true;
 
-            if (FocuserControl != null)
-                this.FocuserControl.updateCurrentPosition("Moving...");
-
             this.MoveAndWait(val);
-
-            if (FocuserControl != null)
-                this.FocuserControl.updateCurrentPosition();
 
             profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position", this.position.ToString());
 
@@ -275,6 +269,17 @@ namespace ASCOM.Arduino
             SerialConnection.Write(": P " + val + " #");
 
             this.position = this.GetPositionFromFocuser();
+        }
+
+        public void Reset()
+        {
+            SerialConnection.Close();
+
+            HC.WaitForMilliseconds(1000);
+
+            SerialConnection.Open();
+
+            HC.WaitForMilliseconds(3000);
         }
 
         public int Position
