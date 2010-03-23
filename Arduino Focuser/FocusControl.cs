@@ -12,6 +12,7 @@ namespace ASCOM.Arduino
     public partial class FocusControl : Form
     {
         private ManualResetEvent reset = new ManualResetEvent(false);
+        private string currentPositionText = "Current Position: ";
 
         public FocusControl(ASCOM.Arduino.Focuser f, ASCOM.Utilities.Profile p)
         {
@@ -28,23 +29,13 @@ namespace ASCOM.Arduino
                 this.buttonSlewIn.Enabled = true;
                 this.buttonSlewOut.Enabled = true;
 
-                this.currentPosition.Text = this.focuser.Position.ToString();
+                this.currentPosition.Text = this.currentPositionText + this.focuser.Position.ToString();
                 while (this.focuser.IsMoving)
                 {
                     this.buttonMoveTo.Enabled = false;
-                    this.currentPosition.Text = "Moving";
+                    this.currentPosition.Text = this.currentPositionText + "Moving";
                 }
             }
-        }
-
-        public void updateCurrentPosition(string text)
-        {
-            this.currentPosition.Text = text + "\r";
-        }
-
-        public void updateCurrentPosition()
-        {
-            this.currentPosition.Text = this.focuser.Position.ToString() + "\r";
         }
 
         private void populatePresets()
