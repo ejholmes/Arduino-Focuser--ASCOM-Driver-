@@ -90,7 +90,13 @@ namespace ASCOM.Arduino
 
 
             try { this.comPort = profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "ComPort"); }
-            catch { this.comPort = null; }
+            catch 
+            { 
+                this.comPort = null; 
+#if DEBUG
+                this.comPort = "COM4";
+#endif
+            }
 
             try { this.stepSize = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "StepSize"));}
             catch { this.stepSize = 2; } // Step size in microns
