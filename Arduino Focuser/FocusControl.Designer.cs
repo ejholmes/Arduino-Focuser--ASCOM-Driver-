@@ -30,31 +30,42 @@
         {
             this.comboSelectPreset = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupboxBacklashCompensation = new System.Windows.Forms.GroupBox();
+            this.updownBCSteps = new System.Windows.Forms.NumericUpDown();
+            this.labelBCSteps = new System.Windows.Forms.Label();
+            this.checkboxBCDirection = new System.Windows.Forms.CheckBox();
+            this.checkboxBC = new System.Windows.Forms.CheckBox();
             this.buttonSavePreset = new System.Windows.Forms.Button();
             this.buttonLoadPreset = new System.Windows.Forms.Button();
-            this.groupboxPresetPosition = new System.Windows.Forms.GroupBox();
-            this.presetPosition = new System.Windows.Forms.Label();
             this.groupboxOptions = new System.Windows.Forms.GroupBox();
             this.buttonSetPosition = new System.Windows.Forms.Button();
             this.textboxCustomPosition = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkboxReverse = new System.Windows.Forms.CheckBox();
-            this.groupboxMovement = new System.Windows.Forms.GroupBox();
+            this.groupboxAbsoluteMovement = new System.Windows.Forms.GroupBox();
             this.updownAbsolutePosition = new System.Windows.Forms.NumericUpDown();
-            this.buttonSlewOut = new System.Windows.Forms.Button();
-            this.buttonSlewIn = new System.Windows.Forms.Button();
+            this.buttonPark = new System.Windows.Forms.Button();
             this.buttonHalt = new System.Windows.Forms.Button();
             this.buttonMoveTo = new System.Windows.Forms.Button();
+            this.buttonSlewOut = new System.Windows.Forms.Button();
+            this.buttonSlewIn = new System.Windows.Forms.Button();
             this.buttonManualReset = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.currentPosition = new System.Windows.Forms.ToolStripStatusLabel();
+            this.groupboxIncremental = new System.Windows.Forms.GroupBox();
+            this.buttonIMOut = new System.Windows.Forms.Button();
+            this.buttonIMIn = new System.Windows.Forms.Button();
+            this.updownIncrementalMove = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
-            this.groupboxPresetPosition.SuspendLayout();
+            this.groupboxBacklashCompensation.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownBCSteps)).BeginInit();
             this.groupboxOptions.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupboxMovement.SuspendLayout();
+            this.groupboxAbsoluteMovement.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownAbsolutePosition)).BeginInit();
             this.statusStrip.SuspendLayout();
+            this.groupboxIncremental.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownIncrementalMove)).BeginInit();
             this.SuspendLayout();
             // 
             // comboSelectPreset
@@ -68,15 +79,68 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.groupboxBacklashCompensation);
             this.groupBox1.Controls.Add(this.buttonSavePreset);
             this.groupBox1.Controls.Add(this.buttonLoadPreset);
             this.groupBox1.Controls.Add(this.comboSelectPreset);
-            this.groupBox1.Location = new System.Drawing.Point(9, 163);
+            this.groupBox1.Location = new System.Drawing.Point(9, 209);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(227, 45);
+            this.groupBox1.Size = new System.Drawing.Size(227, 123);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Presets";
+            // 
+            // groupboxBacklashCompensation
+            // 
+            this.groupboxBacklashCompensation.Controls.Add(this.updownBCSteps);
+            this.groupboxBacklashCompensation.Controls.Add(this.labelBCSteps);
+            this.groupboxBacklashCompensation.Controls.Add(this.checkboxBCDirection);
+            this.groupboxBacklashCompensation.Controls.Add(this.checkboxBC);
+            this.groupboxBacklashCompensation.Location = new System.Drawing.Point(9, 44);
+            this.groupboxBacklashCompensation.Name = "groupboxBacklashCompensation";
+            this.groupboxBacklashCompensation.Size = new System.Drawing.Size(210, 71);
+            this.groupboxBacklashCompensation.TabIndex = 4;
+            this.groupboxBacklashCompensation.TabStop = false;
+            this.groupboxBacklashCompensation.Text = "Backlash Compensation";
+            // 
+            // updownBCSteps
+            // 
+            this.updownBCSteps.Location = new System.Drawing.Point(53, 41);
+            this.updownBCSteps.Name = "updownBCSteps";
+            this.updownBCSteps.Size = new System.Drawing.Size(74, 20);
+            this.updownBCSteps.TabIndex = 4;
+            this.updownBCSteps.ValueChanged += new System.EventHandler(this.updownBCSteps_ValueChanged);
+            // 
+            // labelBCSteps
+            // 
+            this.labelBCSteps.AutoSize = true;
+            this.labelBCSteps.Location = new System.Drawing.Point(12, 44);
+            this.labelBCSteps.Name = "labelBCSteps";
+            this.labelBCSteps.Size = new System.Drawing.Size(34, 13);
+            this.labelBCSteps.TabIndex = 3;
+            this.labelBCSteps.Text = "Steps";
+            // 
+            // checkboxBCDirection
+            // 
+            this.checkboxBCDirection.AutoSize = true;
+            this.checkboxBCDirection.Location = new System.Drawing.Point(87, 19);
+            this.checkboxBCDirection.Name = "checkboxBCDirection";
+            this.checkboxBCDirection.Size = new System.Drawing.Size(118, 17);
+            this.checkboxBCDirection.TabIndex = 1;
+            this.checkboxBCDirection.Text = "On Outward Moves";
+            this.checkboxBCDirection.UseVisualStyleBackColor = true;
+            this.checkboxBCDirection.CheckedChanged += new System.EventHandler(this.checkboxBCDirection_CheckedChanged);
+            // 
+            // checkboxBC
+            // 
+            this.checkboxBC.AutoSize = true;
+            this.checkboxBC.Location = new System.Drawing.Point(15, 19);
+            this.checkboxBC.Name = "checkboxBC";
+            this.checkboxBC.Size = new System.Drawing.Size(65, 17);
+            this.checkboxBC.TabIndex = 0;
+            this.checkboxBC.Text = "Enabled";
+            this.checkboxBC.UseVisualStyleBackColor = true;
+            this.checkboxBC.CheckedChanged += new System.EventHandler(this.checkboxBacklashCompensation_CheckedChanged);
             // 
             // buttonSavePreset
             // 
@@ -98,31 +162,11 @@
             this.buttonLoadPreset.UseVisualStyleBackColor = true;
             this.buttonLoadPreset.Click += new System.EventHandler(this.buttonLoadPreset_Click);
             // 
-            // groupboxPresetPosition
-            // 
-            this.groupboxPresetPosition.Controls.Add(this.presetPosition);
-            this.groupboxPresetPosition.Location = new System.Drawing.Point(9, 112);
-            this.groupboxPresetPosition.Name = "groupboxPresetPosition";
-            this.groupboxPresetPosition.Size = new System.Drawing.Size(227, 45);
-            this.groupboxPresetPosition.TabIndex = 2;
-            this.groupboxPresetPosition.TabStop = false;
-            this.groupboxPresetPosition.Text = "Preset Position";
-            // 
-            // presetPosition
-            // 
-            this.presetPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.presetPosition.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.presetPosition.Location = new System.Drawing.Point(64, 18);
-            this.presetPosition.Name = "presetPosition";
-            this.presetPosition.Size = new System.Drawing.Size(98, 18);
-            this.presetPosition.TabIndex = 0;
-            this.presetPosition.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // groupboxOptions
             // 
             this.groupboxOptions.Controls.Add(this.buttonSetPosition);
             this.groupboxOptions.Controls.Add(this.textboxCustomPosition);
-            this.groupboxOptions.Location = new System.Drawing.Point(9, 214);
+            this.groupboxOptions.Location = new System.Drawing.Point(9, 338);
             this.groupboxOptions.Name = "groupboxOptions";
             this.groupboxOptions.Size = new System.Drawing.Size(227, 48);
             this.groupboxOptions.TabIndex = 4;
@@ -149,7 +193,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.checkboxReverse);
-            this.groupBox2.Location = new System.Drawing.Point(9, 269);
+            this.groupBox2.Location = new System.Drawing.Point(9, 393);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(227, 54);
             this.groupBox2.TabIndex = 5;
@@ -167,19 +211,18 @@
             this.checkboxReverse.UseVisualStyleBackColor = true;
             this.checkboxReverse.CheckedChanged += new System.EventHandler(this.checkboxReverse_CheckedChanged);
             // 
-            // groupboxMovement
+            // groupboxAbsoluteMovement
             // 
-            this.groupboxMovement.Controls.Add(this.updownAbsolutePosition);
-            this.groupboxMovement.Controls.Add(this.buttonSlewOut);
-            this.groupboxMovement.Controls.Add(this.buttonSlewIn);
-            this.groupboxMovement.Controls.Add(this.buttonHalt);
-            this.groupboxMovement.Controls.Add(this.buttonMoveTo);
-            this.groupboxMovement.Location = new System.Drawing.Point(9, 12);
-            this.groupboxMovement.Name = "groupboxMovement";
-            this.groupboxMovement.Size = new System.Drawing.Size(227, 93);
-            this.groupboxMovement.TabIndex = 6;
-            this.groupboxMovement.TabStop = false;
-            this.groupboxMovement.Text = "Movement";
+            this.groupboxAbsoluteMovement.Controls.Add(this.updownAbsolutePosition);
+            this.groupboxAbsoluteMovement.Controls.Add(this.buttonPark);
+            this.groupboxAbsoluteMovement.Controls.Add(this.buttonHalt);
+            this.groupboxAbsoluteMovement.Controls.Add(this.buttonMoveTo);
+            this.groupboxAbsoluteMovement.Location = new System.Drawing.Point(9, 12);
+            this.groupboxAbsoluteMovement.Name = "groupboxAbsoluteMovement";
+            this.groupboxAbsoluteMovement.Size = new System.Drawing.Size(227, 77);
+            this.groupboxAbsoluteMovement.TabIndex = 6;
+            this.groupboxAbsoluteMovement.TabStop = false;
+            this.groupboxAbsoluteMovement.Text = "Absolute Movement";
             // 
             // updownAbsolutePosition
             // 
@@ -188,27 +231,15 @@
             this.updownAbsolutePosition.Size = new System.Drawing.Size(74, 20);
             this.updownAbsolutePosition.TabIndex = 4;
             // 
-            // buttonSlewOut
+            // buttonPark
             // 
-            this.buttonSlewOut.Location = new System.Drawing.Point(117, 57);
-            this.buttonSlewOut.Name = "buttonSlewOut";
-            this.buttonSlewOut.Size = new System.Drawing.Size(75, 23);
-            this.buttonSlewOut.TabIndex = 3;
-            this.buttonSlewOut.Text = "Slew Out";
-            this.buttonSlewOut.UseVisualStyleBackColor = true;
-            this.buttonSlewOut.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonSlewOut_MouseDown);
-            this.buttonSlewOut.MouseUp += new System.Windows.Forms.MouseEventHandler(this.buttonSlewOut_MouseUp);
-            // 
-            // buttonSlewIn
-            // 
-            this.buttonSlewIn.Location = new System.Drawing.Point(36, 57);
-            this.buttonSlewIn.Name = "buttonSlewIn";
-            this.buttonSlewIn.Size = new System.Drawing.Size(75, 23);
-            this.buttonSlewIn.TabIndex = 3;
-            this.buttonSlewIn.Text = "Slew In";
-            this.buttonSlewIn.UseVisualStyleBackColor = true;
-            this.buttonSlewIn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonSlewIn_MouseDown);
-            this.buttonSlewIn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.buttonSlewIn_MouseUp);
+            this.buttonPark.Location = new System.Drawing.Point(89, 45);
+            this.buttonPark.Name = "buttonPark";
+            this.buttonPark.Size = new System.Drawing.Size(60, 23);
+            this.buttonPark.TabIndex = 2;
+            this.buttonPark.Text = "Park";
+            this.buttonPark.UseVisualStyleBackColor = true;
+            this.buttonPark.Click += new System.EventHandler(this.Park);
             // 
             // buttonHalt
             // 
@@ -230,9 +261,31 @@
             this.buttonMoveTo.UseVisualStyleBackColor = true;
             this.buttonMoveTo.Click += new System.EventHandler(this.buttonMoveTo_Click);
             // 
+            // buttonSlewOut
+            // 
+            this.buttonSlewOut.Location = new System.Drawing.Point(144, 77);
+            this.buttonSlewOut.Name = "buttonSlewOut";
+            this.buttonSlewOut.Size = new System.Drawing.Size(75, 23);
+            this.buttonSlewOut.TabIndex = 3;
+            this.buttonSlewOut.Text = "Slew Out";
+            this.buttonSlewOut.UseVisualStyleBackColor = true;
+            this.buttonSlewOut.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonSlewOut_MouseDown);
+            this.buttonSlewOut.MouseUp += new System.Windows.Forms.MouseEventHandler(this.buttonSlewOut_MouseUp);
+            // 
+            // buttonSlewIn
+            // 
+            this.buttonSlewIn.Location = new System.Drawing.Point(144, 48);
+            this.buttonSlewIn.Name = "buttonSlewIn";
+            this.buttonSlewIn.Size = new System.Drawing.Size(75, 23);
+            this.buttonSlewIn.TabIndex = 3;
+            this.buttonSlewIn.Text = "Slew In";
+            this.buttonSlewIn.UseVisualStyleBackColor = true;
+            this.buttonSlewIn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonSlewIn_MouseDown);
+            this.buttonSlewIn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.buttonSlewIn_MouseUp);
+            // 
             // buttonManualReset
             // 
-            this.buttonManualReset.Location = new System.Drawing.Point(76, 329);
+            this.buttonManualReset.Location = new System.Drawing.Point(76, 453);
             this.buttonManualReset.Name = "buttonManualReset";
             this.buttonManualReset.Size = new System.Drawing.Size(90, 23);
             this.buttonManualReset.TabIndex = 7;
@@ -244,7 +297,7 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.currentPosition});
-            this.statusStrip.Location = new System.Drawing.Point(0, 362);
+            this.statusStrip.Location = new System.Drawing.Point(0, 483);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(245, 22);
             this.statusStrip.TabIndex = 8;
@@ -252,20 +305,61 @@
             // currentPosition
             // 
             this.currentPosition.Name = "currentPosition";
-            this.currentPosition.Size = new System.Drawing.Size(0, 17);
+            this.currentPosition.Size = new System.Drawing.Size(99, 17);
             this.currentPosition.Text = "Current Position: ";
+            // 
+            // groupboxIncremental
+            // 
+            this.groupboxIncremental.Controls.Add(this.buttonIMOut);
+            this.groupboxIncremental.Controls.Add(this.buttonIMIn);
+            this.groupboxIncremental.Controls.Add(this.updownIncrementalMove);
+            this.groupboxIncremental.Controls.Add(this.buttonSlewOut);
+            this.groupboxIncremental.Controls.Add(this.buttonSlewIn);
+            this.groupboxIncremental.Location = new System.Drawing.Point(9, 95);
+            this.groupboxIncremental.Name = "groupboxIncremental";
+            this.groupboxIncremental.Size = new System.Drawing.Size(227, 108);
+            this.groupboxIncremental.TabIndex = 9;
+            this.groupboxIncremental.TabStop = false;
+            this.groupboxIncremental.Text = "Incremental Movement";
+            // 
+            // buttonIMOut
+            // 
+            this.buttonIMOut.Location = new System.Drawing.Point(9, 77);
+            this.buttonIMOut.Name = "buttonIMOut";
+            this.buttonIMOut.Size = new System.Drawing.Size(74, 23);
+            this.buttonIMOut.TabIndex = 5;
+            this.buttonIMOut.Text = "Move Out";
+            this.buttonIMOut.UseVisualStyleBackColor = true;
+            this.buttonIMOut.Click += new System.EventHandler(this.buttonIMOut_Click);
+            // 
+            // buttonIMIn
+            // 
+            this.buttonIMIn.Location = new System.Drawing.Point(9, 48);
+            this.buttonIMIn.Name = "buttonIMIn";
+            this.buttonIMIn.Size = new System.Drawing.Size(74, 23);
+            this.buttonIMIn.TabIndex = 5;
+            this.buttonIMIn.Text = "Move In";
+            this.buttonIMIn.UseVisualStyleBackColor = true;
+            this.buttonIMIn.Click += new System.EventHandler(this.buttonIMIn_Click);
+            // 
+            // updownIncrementalMove
+            // 
+            this.updownIncrementalMove.Location = new System.Drawing.Point(9, 22);
+            this.updownIncrementalMove.Name = "updownIncrementalMove";
+            this.updownIncrementalMove.Size = new System.Drawing.Size(74, 20);
+            this.updownIncrementalMove.TabIndex = 4;
             // 
             // FocusControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(245, 384);
+            this.ClientSize = new System.Drawing.Size(245, 505);
+            this.Controls.Add(this.groupboxIncremental);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.buttonManualReset);
-            this.Controls.Add(this.groupboxMovement);
+            this.Controls.Add(this.groupboxAbsoluteMovement);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupboxOptions);
-            this.Controls.Add(this.groupboxPresetPosition);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -275,15 +369,19 @@
             this.Shown += new System.EventHandler(this.FocusControl_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FocusControl_FormClosing);
             this.groupBox1.ResumeLayout(false);
-            this.groupboxPresetPosition.ResumeLayout(false);
+            this.groupboxBacklashCompensation.ResumeLayout(false);
+            this.groupboxBacklashCompensation.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updownBCSteps)).EndInit();
             this.groupboxOptions.ResumeLayout(false);
             this.groupboxOptions.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupboxMovement.ResumeLayout(false);
+            this.groupboxAbsoluteMovement.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.updownAbsolutePosition)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.groupboxIncremental.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.updownIncrementalMove)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -293,9 +391,22 @@
         {
             this.checkboxReverse.Checked = (System.Int32.Parse(this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed")) == 0) ? false : true;
             this.populatePresets();
-            this.updownAbsolutePosition.Maximum = this.focuser.MaxStep;
 
             System.Threading.ThreadPool.QueueUserWorkItem(pollPosition);
+
+            try { this.checkboxBC.Checked = (System.Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC")) == 0) ? false : true; }
+            catch { this.checkboxBC.Checked = false; }
+
+            try { this.updownBCSteps.Value = System.Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps")); }
+            catch { this.updownBCSteps.Value = 100; }
+
+            try { this.checkboxBCDirection.Checked = (System.Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection")) == 0) ? false : true; }
+            catch { this.checkboxBCDirection.Checked = false; }
+
+            this.updownBCSteps.Maximum = 
+                this.updownIncrementalMove.Maximum = 
+                this.updownAbsolutePosition.Maximum = 
+                this.focuser.MaxStep;
         }
 
         void FocusControl_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
@@ -311,15 +422,13 @@
         private System.Windows.Forms.ComboBox comboSelectPreset;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonLoadPreset;
-        private System.Windows.Forms.GroupBox groupboxPresetPosition;
         private System.Windows.Forms.Button buttonSavePreset;
-        private System.Windows.Forms.Label presetPosition;
         private System.Windows.Forms.GroupBox groupboxOptions;
         private System.Windows.Forms.Button buttonSetPosition;
         private System.Windows.Forms.TextBox textboxCustomPosition;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox checkboxReverse;
-        private System.Windows.Forms.GroupBox groupboxMovement;
+        private System.Windows.Forms.GroupBox groupboxAbsoluteMovement;
         private System.Windows.Forms.Button buttonHalt;
         private System.Windows.Forms.Button buttonMoveTo;
         private System.Windows.Forms.Button buttonSlewOut;
@@ -328,5 +437,15 @@
         private System.Windows.Forms.Button buttonManualReset;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel currentPosition;
+        private System.Windows.Forms.GroupBox groupboxIncremental;
+        private System.Windows.Forms.Button buttonPark;
+        private System.Windows.Forms.GroupBox groupboxBacklashCompensation;
+        private System.Windows.Forms.CheckBox checkboxBC;
+        private System.Windows.Forms.NumericUpDown updownBCSteps;
+        private System.Windows.Forms.Label labelBCSteps;
+        private System.Windows.Forms.CheckBox checkboxBCDirection;
+        private System.Windows.Forms.NumericUpDown updownIncrementalMove;
+        private System.Windows.Forms.Button buttonIMIn;
+        private System.Windows.Forms.Button buttonIMOut;
     }
 }

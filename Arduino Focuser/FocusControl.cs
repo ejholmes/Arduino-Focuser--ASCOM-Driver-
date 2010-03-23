@@ -26,13 +26,19 @@ namespace ASCOM.Arduino
             while (true)
             {
                 this.buttonMoveTo.Enabled = true;
-                this.buttonSlewIn.Enabled = true;
-                this.buttonSlewOut.Enabled = true;
+                this.buttonIMIn.Enabled = true;
+                this.buttonIMOut.Enabled = true;
+                this.buttonPark.Enabled = true;
 
                 this.currentPosition.Text = this.currentPositionText + this.focuser.Position.ToString();
                 while (this.focuser.IsMoving)
                 {
                     this.buttonMoveTo.Enabled = false;
+                    this.buttonIMIn.Enabled = false;
+                    this.buttonIMOut.Enabled = false;
+                    this.buttonPark.Enabled = false;
+
+
                     this.currentPosition.Text = this.currentPositionText + "Moving";
                 }
             }
@@ -65,28 +71,52 @@ namespace ASCOM.Arduino
                 this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, title, position.ToString(), this.subkey);
 
                 this.populatePresets();
-                this.openPreset(title);
             }
-        }
-
-        private void openPreset(string key)
-        {
-            this.presetPosition.Text = this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, key, this.subkey);
         }
 
         private void buttonLoadPreset_Click(object sender, EventArgs e)
         {
-            if (this.comboSelectPreset.SelectedItem != null)
+            try
             {
                 string selected = this.comboSelectPreset.SelectedItem.ToString();
                 int position = Int32.Parse(this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, selected, this.subkey));
-                this.focuser.Move(position);
+                bool BC;
+                int BCSteps;
+                bool BCDirection;
+
+                try { BC = (Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC")) == 0) ? false : true; }
+                catch { BC = false; }
+
+                try { BCSteps = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps")); }
+                catch { BCSteps = 100; }
+
+                try { BCDirection = (Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection")) == 0) ? false : true; }
+                catch { BCDirection = false; }
+
+
+                if (BC && !BCDirection && (position - this.focuser.Position < 0) && (position - BCSteps >= 0)) // If BC enabled and inward compensation and inward move and we're not going negative
+                {
+                    this.focuser.Move(position - BCSteps);
+                    this.focuser.Move(position);
+                }
+                else if (BC && BCDirection && (position - this.focuser.Position > 0) && (position + BCSteps <= this.focuser.MaxStep)) // If BC enabled and outward compensation and outward move
+                {
+                    this.focuser.Move(position + BCSteps);
+                    this.focuser.Move(position);
+                }
+                else
+                {
+                    this.focuser.Move(position);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
 
         private void comboSelectPreset_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.openPreset(this.comboSelectPreset.SelectedItem.ToString());
         }
 
         private void buttonDeletePreset_Click(object sender, EventArgs e)
@@ -135,6 +165,19 @@ namespace ASCOM.Arduino
                 ThreadPool.QueueUserWorkItem(doBackgroundMove);
         }
 
+        private void Park(object sender, EventArgs e)
+        {
+            try
+            {
+                int park = Int32.Parse(this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Park", this.subkey));
+                this.focuser.Move(park);
+            }
+            catch
+            {
+                MessageBox.Show("You have not defined a Park position in presets");
+            }
+        }
+
         private void Halt(object sender, EventArgs e)
         {
             this.focuser.Halt();
@@ -163,6 +206,31 @@ namespace ASCOM.Arduino
         private void buttonManualReset_Click(object sender, EventArgs e)
         {
             this.focuser.Reset();
+        }
+
+        private void updownBCSteps_ValueChanged(object sender, EventArgs e)
+        {
+            this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps", this.updownBCSteps.Value.ToString());
+        }
+
+        private void checkboxBacklashCompensation_CheckedChanged(object sender, EventArgs e)
+        {
+            this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC", (this.checkboxBC.Checked == true)?"1":"0");
+        }
+
+        private void checkboxBCDirection_CheckedChanged(object sender, EventArgs e)
+        {
+            this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection", (this.checkboxBCDirection.Checked == true) ? "1" : "0");
+        }
+
+        private void buttonIMIn_Click(object sender, EventArgs e)
+        {
+            this.focuser.Move(this.focuser.Position - (int)this.updownIncrementalMove.Value);
+        }
+
+        private void buttonIMOut_Click(object sender, EventArgs e)
+        {
+            this.focuser.Move(this.focuser.Position + (int)this.updownIncrementalMove.Value);
         }
     }
 }
