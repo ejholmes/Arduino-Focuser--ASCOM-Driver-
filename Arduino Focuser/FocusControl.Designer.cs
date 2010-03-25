@@ -364,6 +364,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "FocusControl";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Focuser Toolbox";
             this.TopMost = true;
             this.Shown += new System.EventHandler(this.FocusControl_Shown);

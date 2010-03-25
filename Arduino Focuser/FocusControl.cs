@@ -14,6 +14,7 @@ namespace ASCOM.Arduino
     {
         private ManualResetEvent reset = new ManualResetEvent(false);
         private string currentPositionText = "Current Position: ";
+        Presets P = new Presets();
 
         public FocusControl(ASCOM.Arduino.Focuser f, ASCOM.Utilities.Profile p)
         {
@@ -49,28 +50,31 @@ namespace ASCOM.Arduino
         {
             try
             {
-                ArrayList l = this.IProfile.Values(ASCOM.Arduino.Focuser.s_csDriverID, this.subkey);
+                P = Presets.LoadFromXml();
 
-                this.comboSelectPreset.DataSource = l;
-                this.comboSelectPreset.DisplayMember = "Key";
-                this.comboSelectPreset.ValueMember = "Value";
+                this.comboSelectPreset.DataSource = P;
+                this.comboSelectPreset.DisplayMember = "Name";
+                this.comboSelectPreset.ValueMember = "Position";
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(ex.ToString());
             }
         }
 
         private void buttonSavePreset_Click(object sender, EventArgs e)
         {
-            int position = this.focuser.Position;
-            string title = this.comboSelectPreset.Text;
-
-            if (title != "")
+            try
             {
-                this.IProfile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, title, position.ToString(), this.subkey);
+                int position = this.focuser.Position;
+                string title = this.comboSelectPreset.Text;
 
-                this.PopulatePresets();
+                P.AddPreset(new Preset(title, position));
+
+                PopulatePresets();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
 
