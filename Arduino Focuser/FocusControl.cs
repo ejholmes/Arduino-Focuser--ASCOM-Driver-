@@ -15,6 +15,7 @@ namespace ASCOM.Arduino
         private ManualResetEvent reset = new ManualResetEvent(false);
         private string currentPositionText = "Current Position: ";
         Presets P = new Presets();
+        PresetEditor pe = new PresetEditor();
 
         public FocusControl(ASCOM.Arduino.Focuser f, ASCOM.Utilities.Profile p)
         {
@@ -172,8 +173,7 @@ namespace ASCOM.Arduino
         {
             try
             {
-                int park = Int32.Parse(this.IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Park", this.subkey));
-                this.focuser.Move(park);
+                this.focuser.Move(0);
             }
             catch
             {
@@ -234,6 +234,12 @@ namespace ASCOM.Arduino
         private void buttonIMOut_Click(object sender, EventArgs e)
         {
             this.focuser.Move(this.focuser.Position + (int)this.updownIncrementalMove.Value);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            pe.SetPresets(ref P);
+            pe.Show();
         }
     }
 }

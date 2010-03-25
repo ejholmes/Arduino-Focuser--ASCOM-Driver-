@@ -59,6 +59,11 @@ namespace ASCOM.Arduino
             this.SaveToXml();
         }
 
+        public void RemovePreset(Preset p)
+        {
+            base.Remove(p);
+        }
+
         private static void CheckFilePaths()
         {
             string dir = Path.GetDirectoryName(xmlLocation);

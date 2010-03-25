@@ -56,6 +56,7 @@
             this.buttonIMOut = new System.Windows.Forms.Button();
             this.buttonIMIn = new System.Windows.Forms.Button();
             this.updownIncrementalMove = new System.Windows.Forms.NumericUpDown();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupboxBacklashCompensation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownBCSteps)).BeginInit();
@@ -285,7 +286,7 @@
             // 
             // buttonManualReset
             // 
-            this.buttonManualReset.Location = new System.Drawing.Point(76, 453);
+            this.buttonManualReset.Location = new System.Drawing.Point(9, 453);
             this.buttonManualReset.Name = "buttonManualReset";
             this.buttonManualReset.Size = new System.Drawing.Size(90, 23);
             this.buttonManualReset.TabIndex = 7;
@@ -349,11 +350,22 @@
             this.updownIncrementalMove.Size = new System.Drawing.Size(74, 20);
             this.updownIncrementalMove.TabIndex = 4;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(146, 453);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(90, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Edit Presets";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FocusControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(245, 505);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupboxIncremental);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.buttonManualReset);
@@ -449,5 +461,6 @@
         private System.Windows.Forms.NumericUpDown updownIncrementalMove;
         private System.Windows.Forms.Button buttonIMIn;
         private System.Windows.Forms.Button buttonIMOut;
+        private System.Windows.Forms.Button button1;
     }
 }
