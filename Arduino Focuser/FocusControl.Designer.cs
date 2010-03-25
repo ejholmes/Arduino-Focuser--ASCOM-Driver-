@@ -35,6 +35,7 @@
             this.labelBCSteps = new System.Windows.Forms.Label();
             this.checkboxBCDirection = new System.Windows.Forms.CheckBox();
             this.checkboxBC = new System.Windows.Forms.CheckBox();
+            this.buttonDeletePreset = new System.Windows.Forms.Button();
             this.buttonSavePreset = new System.Windows.Forms.Button();
             this.buttonLoadPreset = new System.Windows.Forms.Button();
             this.groupboxOptions = new System.Windows.Forms.GroupBox();
@@ -56,7 +57,6 @@
             this.buttonIMOut = new System.Windows.Forms.Button();
             this.buttonIMIn = new System.Windows.Forms.Button();
             this.updownIncrementalMove = new System.Windows.Forms.NumericUpDown();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupboxBacklashCompensation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownBCSteps)).BeginInit();
@@ -74,13 +74,14 @@
             this.comboSelectPreset.FormattingEnabled = true;
             this.comboSelectPreset.Location = new System.Drawing.Point(6, 17);
             this.comboSelectPreset.Name = "comboSelectPreset";
-            this.comboSelectPreset.Size = new System.Drawing.Size(101, 21);
+            this.comboSelectPreset.Size = new System.Drawing.Size(126, 21);
             this.comboSelectPreset.TabIndex = 0;
             this.comboSelectPreset.SelectedIndexChanged += new System.EventHandler(this.comboSelectPreset_SelectedIndexChanged);
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.groupboxBacklashCompensation);
+            this.groupBox1.Controls.Add(this.buttonDeletePreset);
             this.groupBox1.Controls.Add(this.buttonSavePreset);
             this.groupBox1.Controls.Add(this.buttonLoadPreset);
             this.groupBox1.Controls.Add(this.comboSelectPreset);
@@ -143,23 +144,33 @@
             this.checkboxBC.UseVisualStyleBackColor = true;
             this.checkboxBC.CheckedChanged += new System.EventHandler(this.checkboxBacklashCompensation_CheckedChanged);
             // 
+            // buttonDeletePreset
+            // 
+            this.buttonDeletePreset.Image = global::ASCOM.Arduino.Properties.Resources.delete;
+            this.buttonDeletePreset.Location = new System.Drawing.Point(196, 15);
+            this.buttonDeletePreset.Name = "buttonDeletePreset";
+            this.buttonDeletePreset.Size = new System.Drawing.Size(23, 23);
+            this.buttonDeletePreset.TabIndex = 3;
+            this.buttonDeletePreset.UseVisualStyleBackColor = true;
+            this.buttonDeletePreset.Click += new System.EventHandler(this.buttonDeletePreset_Click_1);
+            // 
             // buttonSavePreset
             // 
-            this.buttonSavePreset.Location = new System.Drawing.Point(170, 15);
+            this.buttonSavePreset.Image = global::ASCOM.Arduino.Properties.Resources.save;
+            this.buttonSavePreset.Location = new System.Drawing.Point(167, 15);
             this.buttonSavePreset.Name = "buttonSavePreset";
-            this.buttonSavePreset.Size = new System.Drawing.Size(51, 23);
+            this.buttonSavePreset.Size = new System.Drawing.Size(23, 23);
             this.buttonSavePreset.TabIndex = 3;
-            this.buttonSavePreset.Text = "Save";
             this.buttonSavePreset.UseVisualStyleBackColor = true;
             this.buttonSavePreset.Click += new System.EventHandler(this.buttonSavePreset_Click);
             // 
             // buttonLoadPreset
             // 
-            this.buttonLoadPreset.Location = new System.Drawing.Point(113, 15);
+            this.buttonLoadPreset.Image = global::ASCOM.Arduino.Properties.Resources.open;
+            this.buttonLoadPreset.Location = new System.Drawing.Point(138, 15);
             this.buttonLoadPreset.Name = "buttonLoadPreset";
-            this.buttonLoadPreset.Size = new System.Drawing.Size(51, 23);
+            this.buttonLoadPreset.Size = new System.Drawing.Size(23, 23);
             this.buttonLoadPreset.TabIndex = 1;
-            this.buttonLoadPreset.Text = "Load";
             this.buttonLoadPreset.UseVisualStyleBackColor = true;
             this.buttonLoadPreset.Click += new System.EventHandler(this.buttonLoadPreset_Click);
             // 
@@ -350,22 +361,11 @@
             this.updownIncrementalMove.Size = new System.Drawing.Size(74, 20);
             this.updownIncrementalMove.TabIndex = 4;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(146, 453);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(90, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Edit Presets";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // FocusControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(245, 505);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.groupboxIncremental);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.buttonManualReset);
@@ -461,6 +461,6 @@
         private System.Windows.Forms.NumericUpDown updownIncrementalMove;
         private System.Windows.Forms.Button buttonIMIn;
         private System.Windows.Forms.Button buttonIMOut;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonDeletePreset;
     }
 }

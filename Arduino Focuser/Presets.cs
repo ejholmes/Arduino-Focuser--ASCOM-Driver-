@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System.Reflection;
+using System.ComponentModel;
 
 namespace ASCOM.Arduino
 {
@@ -45,23 +46,53 @@ namespace ASCOM.Arduino
     public class Presets : List<Preset>
     {
         private static string xmlLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ASCOM.Arduino.Focuser.s_csDriverID + @"\Presets.xml");
+        public delegate void ChangedEventHandler(object sender, EventArgs e);
+        public event ChangedEventHandler Changed;
 
-        public void AddPreset(Preset preset)
+        public Presets()
+        {
+            this.Changed += new ChangedEventHandler(ListChanged);
+        }
+
+        protected virtual void OnChanged(EventArgs e)
+        {
+            if (Changed != null)
+                Changed(this, e);
+        }
+
+        private void ListChanged(object sender, EventArgs e)
+        {
+            this.SaveToXml();
+        }
+
+        public new void Add(Preset item)
         {
             foreach (Preset p in this)
             {
-                if (p.Name == preset.Name)
+                if (p.Name == item.Name)
                 {
                     this.Remove(p);
                 }
             }
-            base.Add(preset);
+            base.Add(item);
+        }
+
+        public void AddPreset(Preset item)
+        {
+            this.Add(item);
             this.SaveToXml();
         }
 
-        public void RemovePreset(Preset p)
+        public new void Remove(Preset p)
         {
             base.Remove(p);
+            OnChanged(EventArgs.Empty);
+        }
+
+        public new void Clear()
+        {
+            base.Clear();
+            OnChanged(EventArgs.Empty);
         }
 
         private static void CheckFilePaths()

@@ -15,7 +15,6 @@ namespace ASCOM.Arduino
         private ManualResetEvent reset = new ManualResetEvent(false);
         private string currentPositionText = "Current Position: ";
         Presets P = new Presets();
-        PresetEditor pe = new PresetEditor();
 
         public FocusControl(ASCOM.Arduino.Focuser f, ASCOM.Utilities.Profile p)
         {
@@ -53,6 +52,7 @@ namespace ASCOM.Arduino
             {
                 P = Presets.LoadFromXml();
 
+                this.comboSelectPreset.DataSource = null;
                 this.comboSelectPreset.DataSource = P;
                 this.comboSelectPreset.DisplayMember = "Name";
                 this.comboSelectPreset.ValueMember = "Position";
@@ -236,10 +236,12 @@ namespace ASCOM.Arduino
             this.focuser.Move(this.focuser.Position + (int)this.updownIncrementalMove.Value);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonDeletePreset_Click_1(object sender, EventArgs e)
         {
-            pe.SetPresets(ref P);
-            pe.Show();
+            Preset p = (Preset)this.comboSelectPreset.SelectedItem;
+            P.Remove(p);
+
+            PopulatePresets();
         }
     }
 }
