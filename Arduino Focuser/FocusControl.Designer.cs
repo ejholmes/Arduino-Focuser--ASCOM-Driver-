@@ -389,18 +389,18 @@
 
         void FocusControl_Shown(object sender, System.EventArgs e)
         {
-            this.checkboxReverse.Checked = (System.Int32.Parse(this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed")) == 0) ? false : true;
-            this.populatePresets();
+            this.checkboxReverse.Checked = (System.Int32.Parse(this.IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed")) == 0) ? false : true;
+            this.PopulatePresets();
 
-            System.Threading.ThreadPool.QueueUserWorkItem(pollPosition);
+            System.Threading.ThreadPool.QueueUserWorkItem(PollPosition);
 
-            try { this.checkboxBC.Checked = (System.Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC")) == 0) ? false : true; }
+            try { this.checkboxBC.Checked = (System.Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC")) == 0) ? false : true; }
             catch { this.checkboxBC.Checked = false; }
 
-            try { this.updownBCSteps.Value = System.Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps")); }
+            try { this.updownBCSteps.Value = System.Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps")); }
             catch { this.updownBCSteps.Value = 100; }
 
-            try { this.checkboxBCDirection.Checked = (System.Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection")) == 0) ? false : true; }
+            try { this.checkboxBCDirection.Checked = (System.Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection")) == 0) ? false : true; }
             catch { this.checkboxBCDirection.Checked = false; }
 
             this.updownBCSteps.Maximum = 
@@ -418,7 +418,7 @@
         #endregion
 
         private ASCOM.Arduino.Focuser focuser;
-        private ASCOM.Utilities.Profile profile;
+        private ASCOM.Utilities.Profile IProfile;
         private string subkey = "Presets";
         private System.Windows.Forms.ComboBox comboSelectPreset;
         private System.Windows.Forms.GroupBox groupBox1;

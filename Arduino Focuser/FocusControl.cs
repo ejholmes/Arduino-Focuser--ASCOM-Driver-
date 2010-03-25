@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,11 +18,11 @@ namespace ASCOM.Arduino
         public FocusControl(ASCOM.Arduino.Focuser f, ASCOM.Utilities.Profile p)
         {
             this.focuser = f;
-            this.profile = p;
+            this.IProfile = p;
             InitializeComponent();
         }
 
-        private void pollPosition(object o)
+        private void PollPosition(object o)
         {
             while (true)
             {
@@ -44,20 +45,19 @@ namespace ASCOM.Arduino
             }
         }
 
-        private void populatePresets()
+        private void PopulatePresets()
         {
             try
             {
-                this.comboSelectPreset.Items.Clear();
-                System.Collections.ArrayList list = this.profile.Values(ASCOM.Arduino.Focuser.s_csDriverID, this.subkey);
+                ArrayList l = this.IProfile.Values(ASCOM.Arduino.Focuser.s_csDriverID, this.subkey);
 
-                foreach (ASCOM.Utilities.KeyValuePair kv in list)
-                {
-                    this.comboSelectPreset.Items.Add(kv.Key);
-                }
+                this.comboSelectPreset.DataSource = l;
+                this.comboSelectPreset.DisplayMember = "Key";
+                this.comboSelectPreset.ValueMember = "Value";
             }
-            catch
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.ToString());
             }
         }
 
@@ -68,9 +68,9 @@ namespace ASCOM.Arduino
 
             if (title != "")
             {
-                this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, title, position.ToString(), this.subkey);
+                this.IProfile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, title, position.ToString(), this.subkey);
 
-                this.populatePresets();
+                this.PopulatePresets();
             }
         }
 
@@ -78,19 +78,18 @@ namespace ASCOM.Arduino
         {
             try
             {
-                string selected = this.comboSelectPreset.SelectedItem.ToString();
-                int position = Int32.Parse(this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, selected, this.subkey));
+                int position = Int32.Parse(this.comboSelectPreset.SelectedValue.ToString());
                 bool BC;
                 int BCSteps;
                 bool BCDirection;
 
-                try { BC = (Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC")) == 0) ? false : true; }
+                try { BC = (Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC")) == 0) ? false : true; }
                 catch { BC = false; }
 
-                try { BCSteps = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps")); }
+                try { BCSteps = Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps")); }
                 catch { BCSteps = 100; }
 
-                try { BCDirection = (Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection")) == 0) ? false : true; }
+                try { BCDirection = (Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection")) == 0) ? false : true; }
                 catch { BCDirection = false; }
 
 
@@ -125,8 +124,8 @@ namespace ASCOM.Arduino
 
             if (MessageBox.Show("Are you sure you want to delete " + selected +"?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                this.profile.DeleteValue(ASCOM.Arduino.Focuser.s_csDriverID, selected, this.subkey);
-                this.populatePresets();
+                this.IProfile.DeleteValue(ASCOM.Arduino.Focuser.s_csDriverID, selected, this.subkey);
+                this.PopulatePresets();
             }
         }
 
@@ -169,7 +168,7 @@ namespace ASCOM.Arduino
         {
             try
             {
-                int park = Int32.Parse(this.profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Park", this.subkey));
+                int park = Int32.Parse(this.IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Park", this.subkey));
                 this.focuser.Move(park);
             }
             catch
@@ -210,17 +209,17 @@ namespace ASCOM.Arduino
 
         private void updownBCSteps_ValueChanged(object sender, EventArgs e)
         {
-            this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps", this.updownBCSteps.Value.ToString());
+            this.IProfile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps", this.updownBCSteps.Value.ToString());
         }
 
         private void checkboxBacklashCompensation_CheckedChanged(object sender, EventArgs e)
         {
-            this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC", (this.checkboxBC.Checked == true)?"1":"0");
+            this.IProfile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC", (this.checkboxBC.Checked == true)?"1":"0");
         }
 
         private void checkboxBCDirection_CheckedChanged(object sender, EventArgs e)
         {
-            this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection", (this.checkboxBCDirection.Checked == true) ? "1" : "0");
+            this.IProfile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection", (this.checkboxBCDirection.Checked == true) ? "1" : "0");
         }
 
         private void buttonIMIn_Click(object sender, EventArgs e)
