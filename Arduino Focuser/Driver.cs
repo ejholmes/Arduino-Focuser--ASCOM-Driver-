@@ -56,69 +56,61 @@ namespace ASCOM.Arduino
         public static string s_csDriverDescription = "Arduino Focuser";
 
         // Link connection
-        private bool linkState = false;
+        private bool ILinkState = false;
 
         // Max Steps per move
-        private int maxIncrement;
+        private int IMaxIncrement;
 
-        private int maxStep;
+        private int IMaxStep;
 
         // Step size (microns) for the focuser
-        private int stepSize;
+        private int IStepSize;
 
-        private string comPort;
+        private string ComPort;
 
-        private bool isMoving = false;
+        private bool IIsMoving = false;
 
         private bool gtg = true;
 
-        Stack commandQueue = new Stack();
-
-        public int position = 0;
+        public int IPosition = 0;
 
         private bool reversed = false;
 
         private FocusControl FocuserControl;
 
-        private SerialPort SerialConnection;
+        private ArduinoSerial SerialConnection;
 
         private ASCOM.Utilities.Util HC = new ASCOM.Utilities.Util();
 
-        private ASCOM.Utilities.Profile profile = new ASCOM.Utilities.Profile();
+        private ASCOM.Utilities.Profile IProfile = new ASCOM.Utilities.Profile();
 
         //
         // Constructor - Must be public for COM registration!
         //
         public Focuser()
         {
-            profile.DeviceType = "Focuser";
+            IProfile.DeviceType = "Focuser";
 
 
-            try { this.comPort = profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "ComPort"); }
-            catch 
-            { 
-                this.comPort = null; 
-#if DEBUG
-                this.comPort = "COM4";
-#endif
-            }
+            try { ComPort = IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "ComPort"); }
+            catch { ComPort = null; }
 
-            try { this.stepSize = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "StepSize"));}
-            catch { this.stepSize = 2; } // Step size in microns
+            try { IStepSize = Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "StepSize"));}
+            catch { IStepSize = 2; } // Step size in microns
 
-            try { this.maxStep = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxStep")); }
-            catch { this.maxStep = 13000; }
+            try { IMaxStep = Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxStep")); }
+            catch { IMaxStep = 13000; }
 
-            try { this.maxIncrement = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxIncrement")); }
-            catch { this.maxIncrement = this.maxStep; }
+            try { IMaxIncrement = Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxIncrement")); }
+            catch { IMaxIncrement = IMaxStep; }
 
-            try { this.position = Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position")); }
-            catch { this.position = 0; }
+            try { IPosition = Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position")); }
+            catch { IPosition = 0; }
 
-            try { this.reversed = (Int32.Parse(profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed")) == 0) ? false : true; }
-            catch { this.reversed = false; }
+            try { reversed = (Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed")) == 0) ? false : true; }
+            catch { reversed = false; }
 
-            FocuserControl = new FocusControl(this, profile);
+            FocuserControl = new FocusControl(this, IProfile);
         }
 
         #region ASCOM Registration
@@ -168,26 +160,26 @@ namespace ASCOM.Arduino
 
         public void Halt()
         {
-            SerialConnection.Write(": H #");
+            SerialConnection.SendCommand(ArduinoSerial.SerialCommand.Halt);
         }
 
         public bool IsMoving
         {
-            get { return this.isMoving; }
+            get { return IIsMoving; }
         }
 
         public bool Link
         {
-            get { return this.linkState; }
+            get { return ILinkState; }
             set 
             {
                 switch (value)
                 {
                     case true:
-                        this.linkState = this.connectFocuser();
+                        ILinkState = connectFocuser();
                         break;
                     case false:
-                        this.linkState = !this.disconnectFocuser();
+                        ILinkState = !disconnectFocuser();
                         break;
                 }
             }
@@ -196,43 +188,36 @@ namespace ASCOM.Arduino
         // Method for actually attempting to connect to the focuser
         public bool connectFocuser()
         {
-            SerialConnection = new SerialPort();
-            SerialConnection.DataReceived += new SerialDataReceivedEventHandler(SerialConnection_DataReceived);
+            SerialConnection = new ArduinoSerial(this.ProcessQueue);
             SerialConnection.Parity = Parity.None;
-            SerialConnection.PortName = this.comPort;
+            SerialConnection.PortName = this.ComPort;
             SerialConnection.StopBits = StopBits.One;
             SerialConnection.BaudRate = 9600;
 
             SerialConnection.Open();
             HC.WaitForMilliseconds(2000);
 
-            this.ReverseMotorDirection(this.reversed);
-            this.SetPositionOnFocuser(this.position);
+            ReverseMotorDirection(this.reversed);
+            SetPositionOnFocuser(this.IPosition);
             
             FocuserControl.Show();
 
             return true;
         }
 
-        private void SerialConnection_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            commandQueue.Push(SerialConnection.ReadLine().Trim("\r".ToCharArray()));
-            ProcessQueue();
-        }
-
         private void ProcessQueue()
         {
-            while (commandQueue.Count > 0)
+            while (SerialConnection.CommandQueue.Count > 0)
             {
-                string[] com_args = ((string)commandQueue.Pop()).Split(' ');
+                string[] com_args = ((string)SerialConnection.CommandQueue.Pop()).Split(' ');
 
                 string command = com_args[0];
 
                 switch (command)
                 {
                     case "P":
-                        this.position = Int32.Parse(com_args[1]);
-                        this.gtg = true;
+                        IPosition = Int32.Parse(com_args[1]);
+                        gtg = true;
                         break;
                 }
             }
@@ -242,44 +227,39 @@ namespace ASCOM.Arduino
         public bool disconnectFocuser()
         {
             SerialConnection.Close();
-
             FocuserControl.Dispose();
-
             return true;
         }
 
         public void ReverseMotorDirection(bool reverse)
         {
             string rev = ((reverse) ? 1 : 0).ToString();
-            this.profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed", rev);
-            SerialConnection.Write(": R " + rev + " #");
+            IProfile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed", rev);
+            SerialConnection.SendCommand(ArduinoSerial.SerialCommand.Reverse, rev);
         }
 
         public int MaxIncrement
         {
-            get { return this.maxIncrement; }
+            get { return this.IMaxIncrement; }
         }
 
         public int MaxStep
         {
-            get { return this.maxStep; }
+            get { return this.IMaxStep; }
         }
 
         public void Move(int val)
         {
-            this.isMoving = true;
-
-            this.MoveAndWait(val);
-
-            profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position", this.position.ToString());
-
-            this.isMoving = false;
+            IIsMoving = true;
+            MoveAndWait(val);
+            IProfile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position", IPosition.ToString());
+            IIsMoving = false;
         }
 
         private void MoveAndWait(int val)
         {
-            this.gtg = false;
-            SerialConnection.Write(": M " + val + " #");
+            gtg = false;
+            SerialConnection.SendCommand(ArduinoSerial.SerialCommand.Move, val);
 
             while (!gtg)
                 HC.WaitForMilliseconds(100);
@@ -287,26 +267,17 @@ namespace ASCOM.Arduino
 
         public void SetPositionOnFocuser(int val)
         {
-            SerialConnection.Write(": P " + val + " #");
+            SerialConnection.SendCommand(ArduinoSerial.SerialCommand.Position, val);
         }
 
         public void Reset()
         {
-            SerialConnection.Close();
-
-            HC.WaitForMilliseconds(1000);
-
-            SerialConnection.Open();
-
-            HC.WaitForMilliseconds(3000);
+            SerialConnection.ResetConnection();
         }
 
         public int Position
         {
-            get 
-            {
-                return this.position; 
-            }
+            get {  return this.IPosition; }
         }
 
         public void SetupDialog()
@@ -317,10 +288,7 @@ namespace ASCOM.Arduino
 
         public double StepSize
         {
-            get 
-            {
-                return stepSize; 
-            }
+            get { return IStepSize; }
         }
 
         public bool TempComp

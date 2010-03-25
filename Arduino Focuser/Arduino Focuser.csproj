@@ -68,6 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArduinoSerial.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Driver.cs" />
     <Compile Include="FocusControl.cs">
       <SubType>Form</SubType>
