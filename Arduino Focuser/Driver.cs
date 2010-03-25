@@ -27,6 +27,7 @@ using System.Runtime.InteropServices;
 using System.IO.Ports;
 using System.Collections;
 using System.Reflection;
+using System.Threading;
 
 using ASCOM;
 using ASCOM.Helper;
@@ -68,6 +69,10 @@ namespace ASCOM.Arduino
         private string comPort;
 
         private bool isMoving = false;
+
+        private bool gtg = true;
+
+        Stack commandQueue = new Stack();
 
         public int position = 0;
 
@@ -192,22 +197,45 @@ namespace ASCOM.Arduino
         public bool connectFocuser()
         {
             SerialConnection = new SerialPort();
+            SerialConnection.DataReceived += new SerialDataReceivedEventHandler(SerialConnection_DataReceived);
             SerialConnection.Parity = Parity.None;
             SerialConnection.PortName = this.comPort;
             SerialConnection.StopBits = StopBits.One;
             SerialConnection.BaudRate = 9600;
 
             SerialConnection.Open();
-
-            HC.WaitForMilliseconds(3000);
-            SerialConnection.DiscardInBuffer();
+            HC.WaitForMilliseconds(2000);
 
             this.ReverseMotorDirection(this.reversed);
             this.SetPositionOnFocuser(this.position);
-
+            
             FocuserControl.Show();
 
             return true;
+        }
+
+        private void SerialConnection_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            commandQueue.Push(SerialConnection.ReadLine().Trim("\r".ToCharArray()));
+            ProcessQueue();
+        }
+
+        private void ProcessQueue()
+        {
+            while (commandQueue.Count > 0)
+            {
+                string[] com_args = ((string)commandQueue.Pop()).Split(' ');
+
+                string command = com_args[0];
+
+                switch (command)
+                {
+                    case "P":
+                        this.position = Int32.Parse(com_args[1]);
+                        this.gtg = true;
+                        break;
+                }
+            }
         }
 
         // Method for disconnecting the focuser
@@ -250,31 +278,16 @@ namespace ASCOM.Arduino
 
         private void MoveAndWait(int val)
         {
-            SerialConnection.DiscardInBuffer();
+            this.gtg = false;
             SerialConnection.Write(": M " + val + " #");
 
-            this.position = this.GetPositionFromFocuser();
-        }
-
-        public int GetPositionFromFocuser()
-        {
-            while (SerialConnection.BytesToRead == 0)
-            {
+            while (!gtg)
                 HC.WaitForMilliseconds(100);
-            }
-
-            string ret = SerialConnection.ReadLine();
-            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"[-+]?\b\d+\b");
-            System.Text.RegularExpressions.Match m = regex.Match(ret);
-
-            return Int32.Parse(m.ToString());
         }
 
         public void SetPositionOnFocuser(int val)
         {
             SerialConnection.Write(": P " + val + " #");
-
-            this.position = this.GetPositionFromFocuser();
         }
 
         public void Reset()
