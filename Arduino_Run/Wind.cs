@@ -24,7 +24,7 @@ namespace Arduino_Run
 
             ASCOM.Arduino.Focuser f = new ASCOM.Arduino.Focuser();
 
-            f.ComPort = "COM4";
+            //f.ComPort = "COM4";
 
             f.Link = true;
         }

@@ -65,11 +65,8 @@ namespace ASCOM.Arduino
 
         // Step size (microns) for the focuser
         private int IStepSize;
-#if DEBUG
-        public string ComPort;
-#else
+
         private string ComPort;
-#endif
 
         private bool IIsMoving = false;
 
