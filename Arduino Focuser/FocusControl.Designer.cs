@@ -402,24 +402,19 @@
 
         void FocusControl_Shown(object sender, System.EventArgs e)
         {
-            this.checkboxReverse.Checked = (System.Int32.Parse(this.IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed")) == 0) ? false : true;
             this.PopulatePresets();
 
             System.Threading.ThreadPool.QueueUserWorkItem(PollPosition);
 
-            try { this.checkboxBC.Checked = (System.Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC")) == 0) ? false : true; }
-            catch { this.checkboxBC.Checked = false; }
-
-            try { this.updownBCSteps.Value = System.Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps")); }
-            catch { this.updownBCSteps.Value = 100; }
-
-            try { this.checkboxBCDirection.Checked = (System.Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection")) == 0) ? false : true; }
-            catch { this.checkboxBCDirection.Checked = false; }
+            this.checkboxBC.Checked = this.Config.BacklashCompensation;
+            this.updownBCSteps.Value = this.Config.BacklashCompensationSteps;
+            this.checkboxBCDirection.Checked = this.Config.BacklashCompensationDir;
+            this.checkboxReverse.Checked = this.Config.Reversed;
 
             this.updownBCSteps.Maximum = 
                 this.updownIncrementalMove.Maximum = 
                 this.updownAbsolutePosition.Maximum = 
-                this.focuser.MaxStep;
+                this.Focuser.MaxStep;
             this.updownIncrementalMove.Value = 1000;
         }
 
@@ -430,9 +425,8 @@
 
         #endregion
 
-        private ASCOM.Arduino.Focuser focuser;
-        private ASCOM.Utilities.Profile IProfile;
-        private string subkey = "Presets";
+        private ASCOM.Arduino.Focuser Focuser;
+        private Config Config;
         private System.Windows.Forms.ComboBox comboSelectPreset;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonLoadPreset;

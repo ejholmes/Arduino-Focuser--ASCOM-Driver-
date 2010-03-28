@@ -71,6 +71,7 @@
     <Compile Include="ArduinoSerial.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Config.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="FocusControl.cs">
       <SubType>Form</SubType>
