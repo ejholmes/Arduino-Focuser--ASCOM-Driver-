@@ -165,24 +165,6 @@ namespace ASCOM.Arduino
             }
         }
 
-        /*private void ProcessQueue()
-        {
-            while (SerialConnection.CommandQueue.Count > 0)
-            {
-                string[] com_args = ((string)SerialConnection.CommandQueue.Pop()).Split(' ');
-
-                string command = com_args[0];
-
-                switch (command)
-                {
-                    case "P":
-                        this.Config.Position = Int32.Parse(com_args[1]);
-                        this.gtg = true;
-                        break;
-                }
-            }
-        }*/
-
         public bool DisconnectFocuser()
         {
             SerialConnection.Close();
