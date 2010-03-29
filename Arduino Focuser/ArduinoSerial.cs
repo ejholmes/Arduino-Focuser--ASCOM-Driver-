@@ -12,8 +12,8 @@ namespace ASCOM.Arduino
         ASCOM.Utilities.Util HC = new ASCOM.Utilities.Util(); // Helper class
         public Stack CommandQueue = new Stack(); // Our command received stack
 
-        public delegate void ProcessStack(); // Our Process stack callback
-        ProcessStack p; 
+        public delegate void CommandQueueReadyEventHandler(object sender, EventArgs e); // Our Process stack callback
+        public event CommandQueueReadyEventHandler CommandQueueReady; 
 
         // Serial commands look like ": M 100 #"
         public struct SerialCommand
@@ -31,25 +31,24 @@ namespace ASCOM.Arduino
             public static string Reverse        = "R";
         }
 
-        public ArduinoSerial(ProcessStack pstack, StopBits stopBits, int baud, bool autostart)
+        public ArduinoSerial(StopBits stopBits, int baud, bool autostart)
         {
             this.Parity = Parity.None;
             this.PortName = new Config().ComPort;
             this.StopBits = stopBits;
             this.BaudRate = baud;
-            p = pstack;
             this.DataReceived += new SerialDataReceivedEventHandler(ArduinoSerial_DataReceived);
 
             if (autostart)
                 this.Open();
         }
 
-        public ArduinoSerial(ProcessStack pstack) : this(pstack, StopBits.One, 9600, true) { } 
+        public ArduinoSerial() : this(StopBits.One, 9600, true) { } 
 
         private void ArduinoSerial_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             CommandQueue.Push(this.ReadLine().Trim("\r".ToCharArray())); // Push latest command onto the stack
-            p.Invoke(); // Invoke process stack callback
+            CommandQueueReady(this, e);
         }
 
         public void SendCommand(string command, object arg1)

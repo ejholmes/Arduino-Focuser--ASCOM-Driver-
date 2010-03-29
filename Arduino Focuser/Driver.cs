@@ -134,9 +134,9 @@ namespace ASCOM.Arduino
 
         public bool ConnectFocuser()
         {
-            SerialConnection = new ArduinoSerial(this.ProcessQueue);
+            SerialConnection = new ArduinoSerial();
+            SerialConnection.CommandQueueReady += new ArduinoSerial.CommandQueueReadyEventHandler(SerialConnection_CommandQueueReady);
 
-            SerialConnection.Open();
             HC.WaitForMilliseconds(2000);
 
             ReverseMotorDirection(this.Config.Reversed);
@@ -147,7 +147,7 @@ namespace ASCOM.Arduino
             return true;
         }
 
-        private void ProcessQueue()
+        private void SerialConnection_CommandQueueReady(object sender, EventArgs e)
         {
             while (SerialConnection.CommandQueue.Count > 0)
             {
@@ -164,6 +164,24 @@ namespace ASCOM.Arduino
                 }
             }
         }
+
+        /*private void ProcessQueue()
+        {
+            while (SerialConnection.CommandQueue.Count > 0)
+            {
+                string[] com_args = ((string)SerialConnection.CommandQueue.Pop()).Split(' ');
+
+                string command = com_args[0];
+
+                switch (command)
+                {
+                    case "P":
+                        this.Config.Position = Int32.Parse(com_args[1]);
+                        this.gtg = true;
+                        break;
+                }
+            }
+        }*/
 
         public bool DisconnectFocuser()
         {
