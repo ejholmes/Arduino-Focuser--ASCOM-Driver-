@@ -135,10 +135,6 @@ namespace ASCOM.Arduino
         public bool ConnectFocuser()
         {
             SerialConnection = new ArduinoSerial(this.ProcessQueue);
-            SerialConnection.Parity = Parity.None;
-            SerialConnection.PortName = this.Config.ComPort;
-            SerialConnection.StopBits = StopBits.One;
-            SerialConnection.BaudRate = 9600;
 
             SerialConnection.Open();
             HC.WaitForMilliseconds(2000);

@@ -31,11 +31,20 @@ namespace ASCOM.Arduino
             public static string Reverse        = "R";
         }
 
-        public ArduinoSerial(ProcessStack pstack)
+        public ArduinoSerial(ProcessStack pstack, StopBits stopBits, int baud, bool autostart)
         {
+            this.Parity = Parity.None;
+            this.PortName = new Config().ComPort;
+            this.StopBits = stopBits;
+            this.BaudRate = baud;
             p = pstack;
             this.DataReceived += new SerialDataReceivedEventHandler(ArduinoSerial_DataReceived);
+
+            if (autostart)
+                this.Open();
         }
+
+        public ArduinoSerial(ProcessStack pstack) : this(pstack, StopBits.One, 9600, true) { } 
 
         private void ArduinoSerial_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
