@@ -400,24 +400,6 @@
 
         }
 
-        void FocusControl_Shown(object sender, System.EventArgs e)
-        {
-            this.PopulatePresets();
-
-            System.Threading.ThreadPool.QueueUserWorkItem(PollPosition);
-
-            this.checkboxBC.Checked = this.Config.BacklashCompensation;
-            this.updownBCSteps.Value = this.Config.BacklashCompensationSteps;
-            this.checkboxBCDirection.Checked = this.Config.BacklashCompensationDir;
-            this.checkboxReverse.Checked = this.Config.Reversed;
-
-            this.updownBCSteps.Maximum = 
-                this.updownIncrementalMove.Maximum = 
-                this.updownAbsolutePosition.Maximum = 
-                this.Focuser.MaxStep;
-            this.updownIncrementalMove.Value = 1000;
-        }
-
         void FocusControl_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
         {
             e.Cancel = true;

@@ -17,11 +17,30 @@ namespace ASCOM.Arduino
         private string currentPositionText = "Current Position: ";
         Presets P = new Presets();
 
-        public FocusControl(Focuser f, Config c)
+        public FocusControl(Focuser f, ref Config c)
         {
             this.Focuser = f;
             this.Config = c;
             InitializeComponent();
+        }
+
+        void FocusControl_Shown(object sender, System.EventArgs e)
+        {
+            this.updownBCSteps.Maximum =
+                this.updownIncrementalMove.Maximum =
+                this.updownAbsolutePosition.Maximum =
+                this.Focuser.MaxStep;
+
+            this.PopulatePresets();
+
+            ThreadPool.QueueUserWorkItem(PollPosition);
+
+            this.checkboxBC.Checked = this.Config.BacklashCompensation;
+            this.updownBCSteps.Value = this.Config.BacklashCompensationSteps;
+            this.checkboxBCDirection.Checked = this.Config.BacklashCompensationDir;
+            this.checkboxReverse.Checked = this.Config.Reversed;
+
+            this.updownIncrementalMove.Value = 1000;
         }
 
         private void PollPosition(object o)

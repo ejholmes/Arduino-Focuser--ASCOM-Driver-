@@ -81,7 +81,6 @@ namespace ASCOM.Arduino
             this.comPort.Name = "comPort";
             this.comPort.Size = new System.Drawing.Size(121, 21);
             this.comPort.TabIndex = 4;
-            this.comPort.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // comPortLabel
             // 
@@ -109,6 +108,7 @@ namespace ASCOM.Arduino
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Arduino Focuser Setup";
+            this.Shown += new System.EventHandler(SetupDialogForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.picASCOM)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -123,6 +123,6 @@ namespace ASCOM.Arduino
         private System.Windows.Forms.ComboBox comPort;
         private System.Windows.Forms.Label comPortLabel;
 
-        public ASCOM.Utilities.Profile profile;
+        private Config Config;
     }
 }

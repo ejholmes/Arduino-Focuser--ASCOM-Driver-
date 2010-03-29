@@ -1,26 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
+using System.Runtime.InteropServices;
+
 using ASCOM.Utilities;
 
 namespace ASCOM.Arduino
 {
+    [ComVisible(false)]
     public class Config
     {
+        public static string XmlPresetsLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ASCOM.Arduino.Focuser.s_csDriverID + @"\Presets.xml");
 
-        private bool _LinkState                 = false;
-        private bool _IsMoving                  = false;
-        private bool _Reversed                  = false;
-        private bool _BacklashCompensation      = false;
-        private bool _BacklashCompensationDir   = false;
+        private bool _LinkState                 = false;    // Driver link state, true = connected
+        private bool _IsMoving                  = false;    // True if focuser is moving
+        private bool _Reversed                  = false;    // True if focuser movement is reversed
+        private bool _BacklashCompensation      = false;    // True if backlash compensation is enabled for presets
+        private bool _BacklashCompensationDir   = false;    // True = Outward moves, False = Inward moves, Reversed if this.Reversed
 
-        private int _BacklashCompensationSteps  = 100;
-        private int _MaxIncrement               = 13000;
-        private int _MaxStep                    = 13000;
-        private int _StepSize                   = 2;
-        private int _Position                   = 0;
+        private int _BacklashCompensationSteps  = 100;      // Number of steps to travel for backlash compensation
+        private int _MaxIncrement               = 13000;    // Maximum number of steps the focuser can travel
+        private int _MaxStep                    = 13000;    
+        private int _StepSize                   = 2;        // Distance in microns the focuser moves in one step
+        private int _Position                   = 0;        // Current focuser position
 
-        private string _ComPort                 = null;
+        private string _ComPort                 = null;     // Com port
 
         private Profile _Profile = new Profile();
 
@@ -61,6 +66,24 @@ namespace ASCOM.Arduino
             try 
             {
                 this.Reversed = (Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed")) == 0) ? false : true; 
+            }
+            catch { }
+
+            try
+            {
+                this.BacklashCompensation = (Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BacklashCompensation")) == 0) ? false : true;
+            }
+            catch { }
+
+            try
+            {
+                this.BacklashCompensationDir = (Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BacklashCompensationDir")) == 0) ? false : true;
+            }
+            catch { }
+
+            try
+            {
+                this.BacklashCompensationSteps = Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BacklashCompensationSteps"));
             }
             catch { }
         }

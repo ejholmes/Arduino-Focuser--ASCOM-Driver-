@@ -14,17 +14,20 @@ namespace ASCOM.Arduino
 
         public SetupDialogForm()
         {
-            profile = new ASCOM.Utilities.Profile();
-            profile.DeviceType = "Focuser";
+            Config = new Config();
 
             InitializeComponent();
+        }
 
+        void SetupDialogForm_Shown(object sender, System.EventArgs e)
+        {
             this.comPort.Items.AddRange(new ASCOM.Utilities.Serial().AvailableCOMPorts);
+            this.comPort.SelectedText = this.Config.ComPort;
         }
 
         private void cmdOK_Click(object sender, EventArgs e)
         {
-            profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "ComPort", this.comPort.SelectedItem.ToString());
+            this.Config.ComPort = this.comPort.SelectedItem.ToString();
             Dispose();
         }
 
@@ -48,16 +51,6 @@ namespace ASCOM.Arduino
             {
                 MessageBox.Show(other.Message);
             }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

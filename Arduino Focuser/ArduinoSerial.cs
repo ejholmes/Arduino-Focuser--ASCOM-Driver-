@@ -20,15 +20,15 @@ namespace ASCOM.Arduino
         {
             public struct Syntax
             {
-                public static string Start = ":";
-                public static string End = "#";
-                public static string Spacer = " ";
+                public static string Start      = ":";
+                public static string End        = "#";
+                public static string Spacer     = " ";
             }
 
-            public static string Halt = "H";
-            public static string Move = "M";
-            public static string Position = "P";
-            public static string Reverse = "R";
+            public static string Halt           = "H";
+            public static string Move           = "M";
+            public static string Position       = "P";
+            public static string Reverse        = "R";
         }
 
         public ArduinoSerial(ProcessStack pstack)

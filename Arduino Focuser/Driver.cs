@@ -48,14 +48,11 @@ namespace ASCOM.Arduino
     [ClassInterface(ClassInterfaceType.None)]
     public class Focuser : IFocuser
     {
-        //
-        // Driver ID and descriptive string that shows in the Chooser
-        //
         public static string s_csDriverID = "ASCOM.Arduino.Focuser";
-        // TODO Change the descriptive string for your driver then remove this line
+
         public static string s_csDriverDescription = "Arduino Focuser";
 
-        private bool gtg        = true;
+        private bool gtg = true;
 
         private FocusControl FocuserControl;
 
@@ -65,19 +62,13 @@ namespace ASCOM.Arduino
 
         private Config Config = new Config();
 
-        //
-        // Constructor - Must be public for COM registration!
-        //
         public Focuser()
         {
-            FocuserControl = new FocusControl(this, Config);
+            FocuserControl = new FocusControl(this, ref Config);
         }
 
         #region ASCOM Registration
-        //
-        // Register or unregister driver for ASCOM. This is harmless if already
-        // registered or unregistered. 
-        //
+
         private static void RegUnregASCOM(bool bRegister)
         {
             Helper.Profile P = new Helper.Profile();
@@ -107,10 +98,6 @@ namespace ASCOM.Arduino
         }
         #endregion
 
-        //
-        // PUBLIC COM INTERFACE IFocuser IMPLEMENTATION
-        //
-
         #region IFocuser Members
 
         public bool Absolute
@@ -136,17 +123,16 @@ namespace ASCOM.Arduino
                 switch (value)
                 {
                     case true:
-                        this.Config.LinkState = connectFocuser();
+                        this.Config.LinkState = ConnectFocuser();
                         break;
                     case false:
-                        this.Config.LinkState = !disconnectFocuser();
+                        this.Config.LinkState = !DisconnectFocuser();
                         break;
                 }
             }
         }
 
-        // Method for actually attempting to connect to the focuser
-        public bool connectFocuser()
+        public bool ConnectFocuser()
         {
             SerialConnection = new ArduinoSerial(this.ProcessQueue);
             SerialConnection.Parity = Parity.None;
@@ -183,8 +169,7 @@ namespace ASCOM.Arduino
             }
         }
 
-        // Method for disconnecting the focuser
-        public bool disconnectFocuser()
+        public bool DisconnectFocuser()
         {
             SerialConnection.Close();
             FocuserControl.Dispose();

@@ -45,7 +45,7 @@ namespace ASCOM.Arduino
     [ComVisible(false)]
     public class Presets : List<Preset>
     {
-        private static string xmlLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ASCOM.Arduino.Focuser.s_csDriverID + @"\Presets.xml");
+        private static string xmlLocation = Config.XmlPresetsLocation;
         public delegate void ChangedEventHandler(object sender, EventArgs e);
         public event ChangedEventHandler Changed;
 
