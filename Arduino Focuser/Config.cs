@@ -31,61 +31,91 @@ namespace ASCOM.Arduino
 
         public Config()
         {
-            this._Profile.DeviceType = "Focuser"; 
+            this._Profile.DeviceType = "Focuser";
 
             try 
-            { 
-                this.ComPort = this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "ComPort"); 
+            {
+                this.ComPort = this.GetString("ComPort");
             }
             catch { }
 
             try 
             {
-                this.StepSize = Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "StepSize")); 
+                this.StepSize = this.GetInt("StepSize"); 
             }
             catch { }
 
             try 
             {
-                this.MaxStep = Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxStep")); 
+                this.MaxStep = this.GetInt("MaxStep"); 
             }
             catch { }
 
             try 
             {
-                this.MaxIncrement = Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxIncrement")); 
+                this.MaxIncrement = this.GetInt("MaxIncrement");
             }
             catch { }
 
             try 
             {
-                this.Position = Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position")); 
+                this.Position = this.GetInt("Position");
             }
             catch { }
 
             try 
             {
-                this.Reversed = (Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed")) == 0) ? false : true; 
+                this.Reversed = this.GetBool("Reversed");
             }
             catch { }
 
             try
             {
-                this.BacklashCompensation = (Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BacklashCompensation")) == 0) ? false : true;
+                this.BacklashCompensation = this.GetBool("BacklashCompensation");
             }
             catch { }
 
             try
             {
-                this.BacklashCompensationDir = (Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BacklashCompensationDir")) == 0) ? false : true;
+                this.BacklashCompensationDir = this.GetBool("BacklashCompensationDir");
             }
             catch { }
 
             try
             {
-                this.BacklashCompensationSteps = Int32.Parse(this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BacklashCompensationSteps"));
+                this.BacklashCompensationSteps = this.GetInt("BacklashCompensationSteps");
             }
             catch { }
+        }
+
+        private void WriteValue(string key, string value)
+        {
+            this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxIncrement", value);
+        }
+
+        private void WriteValue(string key, int value)
+        {
+            this.WriteValue(key, value.ToString());
+        }
+
+        private void WriteValue(string key, bool value)
+        {
+            this.WriteValue(key, ((value == true) ? 1 : 0).ToString());
+        }
+
+        private string GetString(string key)
+        {
+            return this._Profile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, key);
+        }
+
+        private int GetInt(string key)
+        {
+            return Int32.Parse(this.GetString(key));
+        }
+
+        private bool GetBool(string key)
+        {
+            return (this.GetInt(key) == 0) ? false : true;
         }
 
         public Profile Profile
@@ -111,7 +141,7 @@ namespace ASCOM.Arduino
             get { return this._Reversed; }
             set 
             {
-                this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "Reversed", ((value) ? 1 : 0).ToString());
+                this.WriteValue("Reversed", value);
                 this._Reversed = value; 
             }
         }
@@ -121,7 +151,7 @@ namespace ASCOM.Arduino
             get { return this._MaxIncrement; }
             set 
             {
-                this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxIncrement", value.ToString());
+                this.WriteValue("MaxIncrement", value);
                 this._MaxIncrement = value; 
             }
         }
@@ -131,7 +161,7 @@ namespace ASCOM.Arduino
             get { return this._MaxStep; }
             set 
             {
-                this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxStep", value.ToString());
+                this.WriteValue("MaxStep", value);
                 this._MaxStep = value; 
             }
         }
@@ -141,7 +171,7 @@ namespace ASCOM.Arduino
             get { return this._StepSize; }
             set 
             {
-                this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "StepSize", value.ToString());
+                this.WriteValue("StepSize", value);
                 this._StepSize = value; 
             }
         }
@@ -151,7 +181,7 @@ namespace ASCOM.Arduino
             get { return this._Position; }
             set 
             {
-                this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "Position", value.ToString());
+                this.WriteValue("Position", value);
                 this._Position = value; 
             }
         }
@@ -161,7 +191,7 @@ namespace ASCOM.Arduino
             get { return this._ComPort; }
             set 
             {
-                this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "ComPort", value);
+                this.WriteValue("ComPort", value);
                 this._ComPort = value; 
             }
         }
@@ -171,7 +201,7 @@ namespace ASCOM.Arduino
             get { return this._BacklashCompensation; }
             set
             {
-                this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BacklashCompensation", (value == true) ? "1" : "0");
+                this.WriteValue("BacklashCompensation", value);
                 this._BacklashCompensation = value;
             }
         }
@@ -181,7 +211,7 @@ namespace ASCOM.Arduino
             get { return this._BacklashCompensationSteps; }
             set
             {
-                this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BacklashCompensationSteps", value.ToString());
+                this.WriteValue("BacklashCompensationSteps", value);
                 this._BacklashCompensationSteps = value;
             }
         }
@@ -191,7 +221,7 @@ namespace ASCOM.Arduino
             get { return this._BacklashCompensationDir; }
             set
             {
-                this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "BacklashCompensationDir", (value == true) ? "1" : "0");
+                this.WriteValue("BacklashCompensationDir", value);
                 this._BacklashCompensationDir = value;
             }
         }
