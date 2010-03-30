@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FocusControl));
             this.comboSelectPreset = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupboxBacklashCompensation = new System.Windows.Forms.GroupBox();
@@ -57,6 +59,7 @@
             this.buttonIMOut = new System.Windows.Forms.Button();
             this.buttonIMIn = new System.Windows.Forms.Button();
             this.updownIncrementalMove = new System.Windows.Forms.NumericUpDown();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1.SuspendLayout();
             this.groupboxBacklashCompensation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownBCSteps)).BeginInit();
@@ -64,7 +67,6 @@
             this.groupBox2.SuspendLayout();
             this.groupboxAbsoluteMovement.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownAbsolutePosition)).BeginInit();
-            this.statusStrip.SuspendLayout();
             this.groupboxIncremental.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownIncrementalMove)).BeginInit();
             this.SuspendLayout();
@@ -307,8 +309,6 @@
             // 
             // statusStrip
             // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.currentPosition});
             this.statusStrip.Location = new System.Drawing.Point(0, 483);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(245, 22);
@@ -361,6 +361,12 @@
             this.updownIncrementalMove.Size = new System.Drawing.Size(74, 20);
             this.updownIncrementalMove.TabIndex = 4;
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "notifyIcon";
+            this.notifyIcon.Click += new System.EventHandler(notifyIcon_Click);
+            // 
             // FocusControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -374,6 +380,7 @@
             this.Controls.Add(this.groupboxOptions);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FocusControl";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -381,6 +388,7 @@
             this.TopMost = true;
             this.Shown += new System.EventHandler(this.FocusControl_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FocusControl_FormClosing);
+            this.Resize += new System.EventHandler(this.FocusControl_Resize);
             this.groupBox1.ResumeLayout(false);
             this.groupboxBacklashCompensation.ResumeLayout(false);
             this.groupboxBacklashCompensation.PerformLayout();
@@ -391,8 +399,6 @@
             this.groupBox2.PerformLayout();
             this.groupboxAbsoluteMovement.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.updownAbsolutePosition)).EndInit();
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
             this.groupboxIncremental.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.updownIncrementalMove)).EndInit();
             this.ResumeLayout(false);
@@ -438,5 +444,6 @@
         private System.Windows.Forms.Button buttonIMIn;
         private System.Windows.Forms.Button buttonIMOut;
         private System.Windows.Forms.Button buttonDeletePreset;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }

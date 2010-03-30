@@ -23,11 +23,18 @@ namespace ASCOM.Arduino
         {
             this.comPort.Items.AddRange(new ASCOM.Utilities.Serial().AvailableCOMPorts);
             this.comPort.SelectedText = this.Config.ComPort;
+
+            this.checkboxUseControlBox.Checked = this.Config.UseFocuserControlBox;
+            this.checkboxFocuserControlBoxMinimizeToTray.Checked = this.Config.FCBMinimizeToTray;
         }
 
         private void cmdOK_Click(object sender, EventArgs e)
         {
-            this.Config.ComPort = this.comPort.SelectedItem.ToString();
+            if(this.comPort.SelectedItem != null)
+                this.Config.ComPort = this.comPort.SelectedItem.ToString();
+            this.Config.UseFocuserControlBox = this.checkboxUseControlBox.Checked;
+            this.Config.FCBMinimizeToTray = this.checkboxFocuserControlBoxMinimizeToTray.Checked;
+
             Dispose();
         }
 

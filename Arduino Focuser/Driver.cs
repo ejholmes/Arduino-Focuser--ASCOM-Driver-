@@ -142,7 +142,8 @@ namespace ASCOM.Arduino
             ReverseMotorDirection(this.Config.Reversed);
             SetPositionOnFocuser(this.Config.Position);
             
-            FocuserControl.Show();
+            if(this.Config.UseFocuserControlBox)
+                FocuserControl.Show();
 
             return true;
         }
@@ -168,7 +169,8 @@ namespace ASCOM.Arduino
         public bool DisconnectFocuser()
         {
             SerialConnection.Close();
-            FocuserControl.Dispose();
+            if(this.Config.UseFocuserControlBox)
+                FocuserControl.Dispose();
             return true;
         }
 

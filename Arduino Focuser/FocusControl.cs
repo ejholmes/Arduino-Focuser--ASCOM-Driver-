@@ -43,6 +43,17 @@ namespace ASCOM.Arduino
             this.updownIncrementalMove.Value = 1000;
         }
 
+        void FocusControl_Resize(object sender, System.EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized && this.Config.FCBMinimizeToTray)
+            {
+                this.notifyIcon.Visible = true;
+                this.notifyIcon.Text = "Arduino Focuser Control Box";
+                this.WindowState = FormWindowState.Minimized;
+                this.ShowInTaskbar = false;
+            }
+        }
+
         private void PollPosition(object o)
         {
             while (true)
@@ -257,6 +268,13 @@ namespace ASCOM.Arduino
             P.Remove(p);
 
             PopulatePresets();
+        }
+
+        private void notifyIcon_Click(object sender, System.EventArgs e)
+        {
+            this.notifyIcon.Visible = false;
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
         }
     }
 }

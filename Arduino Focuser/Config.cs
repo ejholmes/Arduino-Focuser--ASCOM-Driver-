@@ -18,6 +18,8 @@ namespace ASCOM.Arduino
         private bool _Reversed                  = false;    // True if focuser movement is reversed
         private bool _BacklashCompensation      = false;    // True if backlash compensation is enabled for presets
         private bool _BacklashCompensationDir   = false;    // True = Outward moves, False = Inward moves, Reversed if this.Reversed
+        private bool _UseFocuserControlBox      = true;
+        private bool _FCBMinimizeToTray         = false;
 
         private int _BacklashCompensationSteps  = 100;      // Number of steps to travel for backlash compensation
         private int _MaxIncrement               = 13000;    // Maximum number of steps the focuser can travel
@@ -35,62 +37,77 @@ namespace ASCOM.Arduino
 
             try 
             {
-                this.ComPort = this.GetString("ComPort");
+                this._ComPort = this.GetString("ComPort");
             }
             catch { }
 
             try 
             {
-                this.StepSize = this.GetInt("StepSize"); 
+                this._StepSize = this.GetInt("StepSize"); 
             }
             catch { }
 
             try 
             {
-                this.MaxStep = this.GetInt("MaxStep"); 
+                this._MaxStep = this.GetInt("MaxStep"); 
             }
             catch { }
 
             try 
             {
-                this.MaxIncrement = this.GetInt("MaxIncrement");
+                this._MaxIncrement = this.GetInt("MaxIncrement");
             }
             catch { }
 
             try 
             {
-                this.Position = this.GetInt("Position");
+                this._Position = this.GetInt("Position");
             }
             catch { }
 
             try 
             {
-                this.Reversed = this.GetBool("Reversed");
+                this._Reversed = this.GetBool("Reversed");
             }
             catch { }
 
             try
             {
-                this.BacklashCompensation = this.GetBool("BacklashCompensation");
+                this._BacklashCompensation = this.GetBool("BacklashCompensation");
             }
             catch { }
 
             try
             {
-                this.BacklashCompensationDir = this.GetBool("BacklashCompensationDir");
+                this._BacklashCompensationDir = this.GetBool("BacklashCompensationDir");
             }
             catch { }
 
             try
             {
-                this.BacklashCompensationSteps = this.GetInt("BacklashCompensationSteps");
+                this._BacklashCompensationSteps = this.GetInt("BacklashCompensationSteps");
+            }
+            catch { }
+
+            try
+            {
+                this._UseFocuserControlBox = this.GetBool("UseFocuserControlBox");
+            }
+            catch { }
+
+            try
+            {
+                this._FCBMinimizeToTray = this.GetBool("FCBMinimizeToTray");
             }
             catch { }
         }
 
+
+
+
         private void WriteValue(string key, string value)
         {
-            this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, "MaxIncrement", value);
+            this._Profile.WriteValue(ASCOM.Arduino.Focuser.s_csDriverID, key, value);
         }
 
         private void WriteValue(string key, int value)
@@ -117,6 +134,9 @@ namespace ASCOM.Arduino
         {
             return (this.GetInt(key) == 0) ? false : true;
         }
+
+
+
 
         public Profile Profile
         {
@@ -223,6 +243,26 @@ namespace ASCOM.Arduino
             {
                 this.WriteValue("BacklashCompensationDir", value);
                 this._BacklashCompensationDir = value;
+            }
+        }
+
+        public bool UseFocuserControlBox
+        {
+            get { return this._UseFocuserControlBox; }
+            set
+            {
+                this.WriteValue("UseFocuserControlBox", value);
+                this._UseFocuserControlBox = value;
+            }
+        }
+
+        public bool FCBMinimizeToTray
+        {
+            get { return this._FCBMinimizeToTray; }
+            set
+            {
+                this.WriteValue("FCBMinimizeToTray", value);
+                this._FCBMinimizeToTray = value;
             }
         }
 
