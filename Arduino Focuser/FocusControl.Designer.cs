@@ -54,12 +54,12 @@
             this.buttonSlewIn = new System.Windows.Forms.Button();
             this.buttonManualReset = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.currentPosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupboxIncremental = new System.Windows.Forms.GroupBox();
             this.buttonIMOut = new System.Windows.Forms.Button();
             this.buttonIMIn = new System.Windows.Forms.Button();
             this.updownIncrementalMove = new System.Windows.Forms.NumericUpDown();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.currentPosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.groupboxBacklashCompensation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownBCSteps)).BeginInit();
@@ -67,6 +67,7 @@
             this.groupBox2.SuspendLayout();
             this.groupboxAbsoluteMovement.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownAbsolutePosition)).BeginInit();
+            this.statusStrip.SuspendLayout();
             this.groupboxIncremental.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownIncrementalMove)).BeginInit();
             this.SuspendLayout();
@@ -309,16 +310,12 @@
             // 
             // statusStrip
             // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.currentPosition});
             this.statusStrip.Location = new System.Drawing.Point(0, 483);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(245, 22);
             this.statusStrip.TabIndex = 8;
-            // 
-            // currentPosition
-            // 
-            this.currentPosition.Name = "currentPosition";
-            this.currentPosition.Size = new System.Drawing.Size(99, 17);
-            this.currentPosition.Text = "Current Position: ";
             // 
             // groupboxIncremental
             // 
@@ -365,7 +362,12 @@
             // 
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "notifyIcon";
-            this.notifyIcon.Click += new System.EventHandler(notifyIcon_Click);
+            this.notifyIcon.Click += new System.EventHandler(this.notifyIcon_Click);
+            // 
+            // currentPosition
+            // 
+            this.currentPosition.Name = "currentPosition";
+            this.currentPosition.Size = new System.Drawing.Size(0, 17);
             // 
             // FocusControl
             // 
@@ -399,6 +401,8 @@
             this.groupBox2.PerformLayout();
             this.groupboxAbsoluteMovement.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.updownAbsolutePosition)).EndInit();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.groupboxIncremental.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.updownIncrementalMove)).EndInit();
             this.ResumeLayout(false);
@@ -432,7 +436,6 @@
         private System.Windows.Forms.NumericUpDown updownAbsolutePosition;
         private System.Windows.Forms.Button buttonManualReset;
         private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ToolStripStatusLabel currentPosition;
         private System.Windows.Forms.GroupBox groupboxIncremental;
         private System.Windows.Forms.Button buttonPark;
         private System.Windows.Forms.GroupBox groupboxBacklashCompensation;
@@ -445,5 +448,6 @@
         private System.Windows.Forms.Button buttonIMOut;
         private System.Windows.Forms.Button buttonDeletePreset;
         private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.ToolStripStatusLabel currentPosition;
     }
 }
