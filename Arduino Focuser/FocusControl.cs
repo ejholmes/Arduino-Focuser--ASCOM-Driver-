@@ -112,34 +112,24 @@ namespace ASCOM.Arduino
 
         private void buttonLoadPreset_Click(object sender, EventArgs e)
         {
+            this.doBacklashCompensationMove(Int32.Parse(this.comboSelectPreset.SelectedValue.ToString()));
+        }
+
+        private void doBacklashCompensationMove(int position)
+        {
             try
             {
-                int position = Int32.Parse(this.comboSelectPreset.SelectedValue.ToString());
-                /*bool BC;
-                int BCSteps;
-                bool BCDirection;
-
-                try { BC = (Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BC")) == 0) ? false : true; }
-                catch { BC = false; }
-
-                try { BCSteps = Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCSteps")); }
-                catch { BCSteps = 100; }
-
-                try { BCDirection = (Int32.Parse(IProfile.GetValue(ASCOM.Arduino.Focuser.s_csDriverID, "BCDirection")) == 0) ? false : true; }
-                catch { BCDirection = false; }*/
-
-
-                if (this.Config.BacklashCompensation && 
-                    !this.Config.BacklashCompensationDir && 
-                    (position - this.Focuser.Position < 0) && 
+                if (this.Config.BacklashCompensation &&
+                    !this.Config.BacklashCompensationDir &&
+                    (position - this.Focuser.Position < 0) &&
                     (position - this.Config.BacklashCompensationSteps >= 0)) // If BC enabled and inward compensation and inward move and we're not going negative
                 {
                     this.Focuser.Move(position - this.Config.BacklashCompensationSteps);
                     this.Focuser.Move(position);
                 }
-                else if (this.Config.BacklashCompensation && 
-                    this.Config.BacklashCompensationDir && 
-                    (position - this.Focuser.Position > 0) && 
+                else if (this.Config.BacklashCompensation &&
+                    this.Config.BacklashCompensationDir &&
+                    (position - this.Focuser.Position > 0) &&
                     (position + this.Config.BacklashCompensationSteps <= this.Focuser.MaxStep)) // If BC enabled and outward compensation and outward move
                 {
                     this.Focuser.Move(position + this.Config.BacklashCompensationSteps);
@@ -184,15 +174,10 @@ namespace ASCOM.Arduino
             }
         }
 
-        private void doBackgroundMove(object o)
-        {
-            this.Focuser.Move((int)this.updownAbsolutePosition.Value);
-        }
-
         private void buttonMoveTo_Click(object sender, EventArgs e)
         {
             if (this.updownAbsolutePosition.Value >= 0)
-                ThreadPool.QueueUserWorkItem(doBackgroundMove);
+                this.doBacklashCompensationMove((int)this.updownAbsolutePosition.Value);
         }
 
         private void Park(object sender, EventArgs e)

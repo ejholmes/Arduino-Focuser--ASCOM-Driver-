@@ -54,12 +54,12 @@
             this.buttonSlewIn = new System.Windows.Forms.Button();
             this.buttonManualReset = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.currentPosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupboxIncremental = new System.Windows.Forms.GroupBox();
             this.buttonIMOut = new System.Windows.Forms.Button();
             this.buttonIMIn = new System.Windows.Forms.Button();
             this.updownIncrementalMove = new System.Windows.Forms.NumericUpDown();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.currentPosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.groupboxBacklashCompensation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updownBCSteps)).BeginInit();
@@ -83,14 +83,13 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.groupboxBacklashCompensation);
             this.groupBox1.Controls.Add(this.buttonDeletePreset);
             this.groupBox1.Controls.Add(this.buttonSavePreset);
             this.groupBox1.Controls.Add(this.buttonLoadPreset);
             this.groupBox1.Controls.Add(this.comboSelectPreset);
             this.groupBox1.Location = new System.Drawing.Point(9, 209);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(227, 123);
+            this.groupBox1.Size = new System.Drawing.Size(227, 45);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Presets";
@@ -101,9 +100,9 @@
             this.groupboxBacklashCompensation.Controls.Add(this.labelBCSteps);
             this.groupboxBacklashCompensation.Controls.Add(this.checkboxBCDirection);
             this.groupboxBacklashCompensation.Controls.Add(this.checkboxBC);
-            this.groupboxBacklashCompensation.Location = new System.Drawing.Point(9, 44);
+            this.groupboxBacklashCompensation.Location = new System.Drawing.Point(9, 260);
             this.groupboxBacklashCompensation.Name = "groupboxBacklashCompensation";
-            this.groupboxBacklashCompensation.Size = new System.Drawing.Size(210, 71);
+            this.groupboxBacklashCompensation.Size = new System.Drawing.Size(227, 72);
             this.groupboxBacklashCompensation.TabIndex = 4;
             this.groupboxBacklashCompensation.TabStop = false;
             this.groupboxBacklashCompensation.Text = "Backlash Compensation";
@@ -317,6 +316,11 @@
             this.statusStrip.Size = new System.Drawing.Size(245, 22);
             this.statusStrip.TabIndex = 8;
             // 
+            // currentPosition
+            // 
+            this.currentPosition.Name = "currentPosition";
+            this.currentPosition.Size = new System.Drawing.Size(0, 17);
+            // 
             // groupboxIncremental
             // 
             this.groupboxIncremental.Controls.Add(this.buttonIMOut);
@@ -364,16 +368,12 @@
             this.notifyIcon.Text = "notifyIcon";
             this.notifyIcon.Click += new System.EventHandler(this.notifyIcon_Click);
             // 
-            // currentPosition
-            // 
-            this.currentPosition.Name = "currentPosition";
-            this.currentPosition.Size = new System.Drawing.Size(0, 17);
-            // 
             // FocusControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(245, 505);
+            this.Controls.Add(this.groupboxBacklashCompensation);
             this.Controls.Add(this.groupboxIncremental);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.buttonManualReset);
