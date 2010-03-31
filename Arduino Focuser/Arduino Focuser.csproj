@@ -55,6 +55,10 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Arduino.NET, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Arduino.NET\Arduino.NET\bin\Release\Arduino.NET.dll</HintPath>
+    </Reference>
     <Reference Include="ASCOM.Exceptions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=565de7938946fba7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files\Common Files\ASCOM\.net\ASCOM.Exceptions.dll</HintPath>
@@ -68,9 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArduinoSerial.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Commands.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="FocusControl.cs">

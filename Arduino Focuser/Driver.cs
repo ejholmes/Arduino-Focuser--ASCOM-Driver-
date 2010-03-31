@@ -24,14 +24,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.IO;
 using System.IO.Ports;
 using System.Collections;
 using System.Reflection;
 using System.Threading;
 
 using ASCOM;
-/*using ASCOM.Helper;
-using ASCOM.Helper2;*/
 using ASCOM.Interface;
 using ASCOM.Utilities;
 
@@ -56,7 +55,8 @@ namespace ASCOM.Arduino
 
         private FocusControl FocuserControl;
 
-        private ArduinoSerial SerialConnection;
+        //private ArduinoSerial SerialConnection;
+        private System.IO.Arduino Arduino;
 
         private Util HC = new Util();
 
@@ -107,7 +107,8 @@ namespace ASCOM.Arduino
 
         public void Halt()
         {
-            SerialConnection.SendCommand(ArduinoSerial.SerialCommand.Halt);
+            //SerialConnection.SendCommand(ArduinoSerial.SerialCommand.Halt);
+            Arduino.SendCommand(new ArduinoCommand(Commands.Halt));
         }
 
         public bool IsMoving
@@ -134,8 +135,8 @@ namespace ASCOM.Arduino
 
         public bool ConnectFocuser()
         {
-            SerialConnection = new ArduinoSerial();
-            SerialConnection.CommandQueueReady += new ArduinoSerial.CommandQueueReadyEventHandler(SerialConnection_CommandQueueReady);
+            Arduino = new System.IO.Arduino(this.Config.ComPort, 19200, true, 0);
+            Arduino.CommandQueueReady += new System.IO.Arduino.CommandQueueReadyEventHandler(Arduino_CommandQueueReady);
 
             HC.WaitForMilliseconds(2000);
 
@@ -148,19 +149,19 @@ namespace ASCOM.Arduino
             return true;
         }
 
-        private void SerialConnection_CommandQueueReady(object sender, EventArgs e)
+        void Arduino_CommandQueueReady(object sender)
         {
-            while (SerialConnection.CommandQueue.Count > 0)
+            while (Arduino.CommandQueue.Count > 0)
             {
-                string[] com_args = ((string)SerialConnection.CommandQueue.Pop()).Split(' ');
+                ArduinoCommand Command = Arduino.CommandQueue.Pop();
 
-                string command = com_args[0];
-
-                switch (command)
+                switch (Command.Command)
                 {
-                    case "P":
-                        this.Config.Position = Int32.Parse(com_args[1]);
+                    case Commands.Position:
+                        this.Config.Position = Int32.Parse(Command.CommandArgs[0].ToString());
                         this.gtg = true;
+                        break;
+                    default:
                         break;
                 }
             }
@@ -168,7 +169,7 @@ namespace ASCOM.Arduino
 
         public bool DisconnectFocuser()
         {
-            SerialConnection.Close();
+            Arduino.Close();
             if(this.Config.UseFocuserControlBox)
                 FocuserControl.Dispose();
             return true;
@@ -177,7 +178,7 @@ namespace ASCOM.Arduino
         public void ReverseMotorDirection(bool reversed)
         {
             this.Config.Reversed = reversed;
-            SerialConnection.SendCommand(ArduinoSerial.SerialCommand.Reverse, this.Config.Reversed);
+            Arduino.SendCommand(new ArduinoCommand(Commands.Reverse, new ArrayList() { this.Config.Reversed }));
         }
 
         public int MaxIncrement
@@ -200,7 +201,7 @@ namespace ASCOM.Arduino
         private void MoveAndWait(int val)
         {
             this.gtg = false;
-            SerialConnection.SendCommand(ArduinoSerial.SerialCommand.Move, val);
+            Arduino.SendCommand(new ArduinoCommand(Commands.Move, new ArrayList() { val }));
 
             while (!this.gtg)
                 HC.WaitForMilliseconds(100);
@@ -208,12 +209,11 @@ namespace ASCOM.Arduino
 
         public void SetPositionOnFocuser(int val)
         {
-            SerialConnection.SendCommand(ArduinoSerial.SerialCommand.Position, val);
+            Arduino.SendCommand(new ArduinoCommand(Commands.Position, new ArrayList() { val }));
         }
 
         public void Reset()
         {
-            SerialConnection.ResetConnection();
         }
 
         public int Position
