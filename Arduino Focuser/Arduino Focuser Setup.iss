@@ -37,12 +37,7 @@ Name: "{cf}\ASCOM\Uninstall\Focuser\Arduino Focuser"
 Name: source; Description: Install the Source files; Flags: unchecked
 
 [Files]
-Source: "C:\Users\ejholmes\Documents\Visual Studio 2008\Projects\Arduino Focuser\Arduino Focuser\bin\Release\Arduino Focuser.dll"; DestDir: "{app}"
-; Require a read-me HTML to appear after installation, maybe driver's Help doc
-Source: "C:\Users\ejholmes\Documents\Visual Studio 2008\Projects\Arduino Focuser\README.markdown"; DestDir: "{app}"; Flags: isreadme
-; Optional source files (COM and .NET aware)
-Source: "C:\Users\ejholmes\Documents\Visual Studio 2008\Projects\Arduino Focuser\Arduino Focuser\*"; Excludes: *.zip,*.exe,*.dll, \bin\*, \obj\*; DestDir: "{app}\Source\Arduino Focuser Driver"; Tasks: source; Flags: recursesubdirs
-; TODO: Add other files needed by your driver here (add subfolders above)
+Source: "bin\Release\Arduino Focuser.dll"; DestDir: "{app}"
 
 ; Only if driver is .NET
 [Run]
